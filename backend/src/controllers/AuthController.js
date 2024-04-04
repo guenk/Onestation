@@ -1,5 +1,5 @@
-const models = require("../Models");
-const { generateToken } = require('../Middlewares/Auth');
+const models = require("../models");
+const { generateToken } = require('../middlewares/Auth');
 
 const register = async (req, res) => {
   try {
