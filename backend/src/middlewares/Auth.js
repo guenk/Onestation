@@ -8,33 +8,27 @@ const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; // "Bearer TOKEN"
 
-  if (token == null) return res.sendStatus(401);
+  if (!token) return res.sendStatus(401); // Pas de token fourni
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) return res.sendStatus(403); // Token invalide
+    req.user = decoded;
     next();
   });
 };
 
-// Fonction pour générer un JWT
-const generateToken = (email, password) => {
-  // Remplacez cette fonction par l'appel à votre modèle de base de données pour authentifier l'utilisateur
-  // et obtenir son ID et son email.
+// Fonction pour générer un JWT basé sur un objet utilisateur
+const generateToken = (user) => {
+  // Assurez-vous que l'objet `user` contient `IdUtilisateur` et `Email`
+  if (!user || !user.IdUtilisateur || !user.Email) {
+    throw new Error('Les informations utilisateur sont requises pour générer un token.');
+  }
 
-  // Fonction fictive pour illustrer l'exemple
-  const authenticateUser = (email, password) => {
-    if (email === 'utilisateur@example.com' && password === 'motdepasse') {
-      return { IdUtilisateur: 1, Email: email };
-    }
-    return null;
-  };
-
-  const user = authenticateUser(email, password);
-
-  if (!user) return res.sendStatus(401);
-
-  return jwt.sign({ userId: user.IdUtilisateur, email: user.Email }, SECRET_KEY, { expiresIn: '24h' });
+  return jwt.sign(
+    { userId: user.IdUtilisateur, email: user.Email }, 
+    SECRET_KEY, 
+    { expiresIn: '24h' }
+  );
 };
 
 module.exports = { authenticateToken, generateToken };

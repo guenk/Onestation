@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 class AuthManager extends AbstractManager {
   constructor() {
-    super({ table: "register" }); // Assurez-vous que "register" correspond au nom de votre table.
+    super({ table: "Gamer" }); // Assurez-vous que "register" correspond au nom de votre table.
   }
 
   async findByEmail(email) {
