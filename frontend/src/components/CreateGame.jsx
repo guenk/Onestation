@@ -1,6 +1,6 @@
 import './css/Login.css';
 
-function Login({ joinRoom, createRoom }) {
+function CreateGame({ joinRoom, createRoom }) {
     return (
         <form action="" id="formLogin">
             <input type="text" placeholder="Entrez votre pseudo"/>
@@ -10,4 +10,4 @@ function Login({ joinRoom, createRoom }) {
     );
 }
 
-export default Login;
+export default CreateGame;

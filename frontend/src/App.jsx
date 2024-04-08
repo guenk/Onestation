@@ -1,10 +1,11 @@
 import './App.css'
 import io from 'socket.io-client'
 import {useEffect, useState} from 'react'
-import Login from "./components/Login.jsx";
+import CreateGame from "./components/CreateGame.jsx";
 const socket = io('http://localhost:3001')
 
 function App() {
+    const [username, setUsername] = useState('')
     const [room, setRoom] = useState('');
     const [message, setMessage] = useState('');
     const [messageReceived, setMessageReceived] = useState('');
@@ -53,7 +54,7 @@ function App() {
 
         <h1>Guess My Draw</h1>
 
-        <Login joinRoom={joinRoom} createRoom={createRoom}></Login>
+        <CreateGame username={username} setUsername={setUsername} joinRoom={joinRoom} createRoom={createRoom}></CreateGame>
 
         <input type="text" placeholder="Message..." onChange={(e) => handleMessage(e)}/>
         <button onClick={() => {sendMessage()}}>Send a message</button>
