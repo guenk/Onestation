@@ -29,6 +29,24 @@ class RoleModel {
       });
     });
   }
+
+  /**
+   * Récupérer le rôle d'un utilisateur
+   * @param {number} label - le rôle
+   * @returns {Promise<Object>} Une promesse contenant l'id du rôle indiqué.
+   */
+  static async findIdByLabel(label) {
+    return new Promise((resolve, reject) => {
+      const query = "SELECT id_role FROM Role WHERE label = ?";
+      db.get(query, [label], (err, row) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  }
 }
 
 module.exports = RoleModel;

@@ -1,9 +1,9 @@
 const AbstractManager = require("./AbstractManager");
 const bcrypt = require("bcrypt");
 const db = require("../utils/database");
+const RoleModels = require("../models/RoleModels");
 
 class AuthManager extends AbstractManager {
- 
   static async findByEmail(email) {
     return new Promise((resolve, reject) => {
       const query = `
@@ -13,17 +13,16 @@ class AuthManager extends AbstractManager {
         if (err) {
           reject(err);
         } else {
-          resolve(row);
+          resolve(row ? [row] : []);
         }
       });
     });
   }
 
   static async registerUser({ pseudo, email, password }) {
-    
     // Vérification de l'email existant
     const existingUsers = await this.findByEmail(email);
-  
+
     if (existingUsers.length > 0) {
       throw new Error("Un utilisateur avec cet email existe déjà.");
     }
@@ -31,23 +30,24 @@ class AuthManager extends AbstractManager {
     // Hachage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Ajout du role Joueur par défaut
-    const defaultRole = `SELECT id_role FROM Role WHERE label = 'Gamer'`;
+    // Ajout du rôle "Joueur" par défaut
+    const defaultRole = await RoleModels.findIdByLabel("Gamer");
+  
     // Préparation et exécution de la requête d'insertion
-    const query = `INSERT INTO ${this.table} (pseudo, email, password, idRole) VALUES (?, ?, ?, ?)`;
-    try {
-      const [result] = await this.database.query(query, [
-        pseudo,
-        email,
-        hashedPassword,
-        defaultRole.id_role,
-      ]);
-      console.info("Résultat de l'insertion:", result);
-      return { IdUtilisateur: result.insertId };
-    } catch (error) {
-      console.error("Erreur lors de l'insertion:", error);
-      throw error; // Relance l'erreur pour la gestion externe
-    }
+    return new Promise((resolve, reject) => {
+      const query = `INSERT INTO Gamer (pseudo, email, password, id_role) VALUES (?, ?, ?, ?)`;
+      db.get(
+        query,
+        [pseudo, email, hashedPassword, defaultRole.id_role],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row ? [row] : []);
+          }
+        }
+      );
+    });
   }
 
   static async authenticateUser({ email, password }) {
