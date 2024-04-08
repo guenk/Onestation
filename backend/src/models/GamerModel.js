@@ -8,7 +8,12 @@ class GamerModel {
    */
   static findById(idGamer) {
     return new Promise((resolve, reject) => {
-      const query = "SELECT * FROM Gamer WHERE idGamer = ?";
+      const query = `
+      SELECT *, Role.label
+      FROM Gamer 
+      INNER JOINT Role ON Gamer.idRole = Role.idRole 
+      WHERE idGamer = ?
+      `;
       db.get(query, [idGamer], (err, row) => {
         if (err) {
           reject(err);
