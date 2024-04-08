@@ -12,7 +12,7 @@ class AuthManager extends AbstractManager {
     return results;
   }
 
-  async registerUser({ pseudo, email, password }) {
+  static async registerUser({ pseudo, email, password }) {
     console.log("Début de l'inscription", { pseudo, email, password });
 
     // Vérification de l'email existant
@@ -24,10 +24,13 @@ class AuthManager extends AbstractManager {
     // Hachage du mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Ajout du role Joueur par défaut
+    const defaultRole = `SELECT id_role FROM Role WHERE label = 'Gamer`;
+
     // Préparation et exécution de la requête d'insertion
-    const query = `INSERT INTO ${this.table} (pseudo, email, password) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO ${this.table} (pseudo, email, password, idRole) VALUES (?, ?, ?, ?)`;
     try {
-      const [result] = await this.database.query(query, [pseudo, email, hashedPassword]);
+      const [result] = await this.database.query(query, [pseudo, email, hashedPassword, defaultRole.id_role]);
       console.info("Résultat de l'insertion:", result);
       return { IdUtilisateur: result.insertId };
     } catch (error) {
@@ -36,7 +39,7 @@ class AuthManager extends AbstractManager {
     }
   }
 
-  async authenticateUser({ email, password }) {
+  static async authenticateUser({ email, password }) {
     const users = await this.findByEmail(email);
     if (users.length === 0) {
       throw new Error('Aucun utilisateur trouvé avec cet email.');

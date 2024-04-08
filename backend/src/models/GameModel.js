@@ -6,7 +6,7 @@ class GamerModel {
    * @param {number} idGame - L'identifiant du jeu.
    * @returns {Promise<Object>} Une promesse contenant les informations du jeu .
    */
-  static findById(idGame) {
+  static async findById(idGame) {
     return new Promise((resolve, reject) => {
       const query = "SELECT * FROM Game WHERE idGame = ?";
       db.get(query, [idGame], (err, row) => {
