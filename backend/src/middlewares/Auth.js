@@ -19,13 +19,8 @@ const authenticateToken = (req, res, next) => {
 
 // Fonction pour générer un JWT basé sur un objet utilisateur
 const generateToken = (user) => {
-  // Assurez-vous que l'objet `user` contient `IdUtilisateur` et `Email`
-  if (!user || !user.IdUtilisateur || !user.Email) {
-    throw new Error('Les informations utilisateur sont requises pour générer un token.');
-  }
-
   return jwt.sign(
-    { userId: user.IdUtilisateur, email: user.Email }, 
+    { userId: user.id_gamer, email: user.email }, // Utilisation de la casse correcte
     SECRET_KEY, 
     { expiresIn: '24h' }
   );

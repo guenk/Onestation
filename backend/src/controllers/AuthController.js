@@ -3,12 +3,18 @@ const { generateToken } = require('../middlewares/Auth');
 
 const register = async (req, res) => {
   try {
-    const { IdUtilisateur } = await models.registerUser(req.body);
+    const response = await models.registerUser(req.body);
 
-    const token = generateToken({ IdUtilisateur, ...req.body });
-    res
-      .status(201)
-      .json({ success: true, message: "Inscription réussie.", token });
+    if (!response || !response.IdUtilisateur || !response.email) {
+      throw new Error("Les informations utilisateur sont requises pour générer un token.");
+    }
+
+    // Générer le token uniquement si les informations utilisateur sont disponibles
+    const { IdUtilisateur, email } = response;
+    const token = generateToken({ IdUtilisateur, email });
+
+    console.log("Token généré:", token); // Ajout du log
+    res.status(201).json({ success: true, message: "Inscription réussie.", token });
   } catch (err) {
     console.error(err);
     res.status(500).json({
@@ -21,24 +27,24 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { IdUtilisateur, Email } = await models.auth.authenticateUser(
-      req.body
-    );
+    console.log("Requête de connexion reçue:", req.body); // Ajout du log
+    const { IdUtilisateur, email } = await models.authenticateUser(req.body);
+    console.log("Utilisateur trouvé avec les informations suivantes:", { IdUtilisateur, email }); // Ajout du log
 
     if (!IdUtilisateur) {
+      console.log("Aucun utilisateur trouvé avec ces informations.");
       res.status(401).json({
         success: false,
         message: "Aucun utilisateur trouvé avec ces informations.",
       });
     } else {
-      const token = generateToken({ IdUtilisateur, Email });
+      console.log("Connexion réussie pour l'utilisateur:", { IdUtilisateur, email }); // Ajout du log
+      const token = generateToken({ IdUtilisateur, email });
       res.json({ success: true, message: "Connexion réussie.", token });
     }
   } catch (err) {
-    console.error(err);
-    res
-      .status(500)
-      .json({ success: false, message: "Erreur lors de la connexion." });
+    console.error("Erreur lors de la connexion:", err); // Ajout du log
+    res.status(500).json({ success: false, message: "Erreur lors de la connexion." });
   }
 };
 
