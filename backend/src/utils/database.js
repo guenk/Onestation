@@ -19,3 +19,5 @@ db.run(sql, (err) => {
   }
   console.log('Tables created');
 });
+
+module.exports = db;

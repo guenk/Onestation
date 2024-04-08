@@ -3,9 +3,8 @@ const { generateToken } = require("../middlewares/Auth");
 
 const register = async (req, res) => {
   try {
+    const { IdUtilisateur } = await models.registerUser(req.body);
 
-    const { IdUtilisateur } = await models.auth.registerUser(req.body);
- 
     const token = generateToken({ IdUtilisateur, ...req.body });
     res
       .status(201)
