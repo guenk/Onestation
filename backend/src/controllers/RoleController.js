@@ -1,10 +1,10 @@
-const RoleModel = require("../models/GRoleModel");
+const RoleModel = require("../models/RoleModel");
 
-const getById = async (req, res) => {
+const findById = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const role = await RoleModel.findById(id);
+    const role = await RoleModel.getById(id);
     if (role) {
       res.status(200).json(role);
     } else {
@@ -16,5 +16,5 @@ const getById = async (req, res) => {
 };
 
 module.exports = {
-  getById,
+  findById,
 };

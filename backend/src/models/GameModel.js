@@ -1,4 +1,4 @@
-const db = require("../utils/database.js");
+const db = require("../utils/database");
 
 class GamerModel {
   /**
@@ -6,9 +6,9 @@ class GamerModel {
    * @param {number} idGame - L'identifiant du jeu.
    * @returns {Promise<Object>} Une promesse contenant les informations du jeu .
    */
-  static async findById(idGame) {
+  static async getById(idGame) {
     return new Promise((resolve, reject) => {
-      const query = "SELECT * FROM Game WHERE idGame = ?";
+      const query = "SELECT * FROM Game WHERE id_game = ?";
       db.get(query, [idGame], (err, row) => {
         if (err) {
           reject(err);

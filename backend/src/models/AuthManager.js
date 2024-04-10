@@ -1,7 +1,7 @@
 const AbstractManager = require("./AbstractManager");
 const bcrypt = require("bcrypt");
 const db = require("../utils/database");
-const RoleModels = require("../models/RoleModels");
+const RoleModel = require("./RoleModel");
 
 class AuthManager extends AbstractManager {
   static async findByEmail(email) {
@@ -31,7 +31,7 @@ class AuthManager extends AbstractManager {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Ajout du rôle "Joueur" par défaut
-    const defaultRole = await RoleModels.findIdByLabel("Gamer");
+    const defaultRole = await RoleModel.getIdByLabel("Gamer");
 
     // Préparation et exécution de la requête d'insertion
     try {

@@ -1,4 +1,4 @@
-const db = require("../utils/database.js");
+const db = require("../utils/database");
 
 class RoleModel {
   roles = ["Admin", "Moderator", "Gamer", "GameHoster", "GamePlayer"];
@@ -17,9 +17,9 @@ class RoleModel {
    * @param {number} idRole - L'identifiant du rôle
    * @returns {Promise<Object>} Une promesse contenant les informations du jeu .
    */
-  static async findById(idRole) {
+  static async getById(idRole) {
     return new Promise((resolve, reject) => {
-      const query = "SELECT * FROM Role WHERE idRole = ?";
+      const query = "SELECT * FROM Role WHERE id_role = ?";
       db.get(query, [idRole], (err, row) => {
         if (err) {
           reject(err);
@@ -35,7 +35,7 @@ class RoleModel {
    * @param {number} label - le rôle
    * @returns {Promise<Object>} Une promesse contenant l'id du rôle indiqué.
    */
-  static async findIdByLabel(label) {
+  static async getIdByLabel(label) {
     return new Promise((resolve, reject) => {
       const query = "SELECT id_role FROM Role WHERE label = ?";
       db.get(query, [label], (err, row) => {

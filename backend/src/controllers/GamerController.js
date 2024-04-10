@@ -1,6 +1,6 @@
-const GamerModel = require("../models/GamerModel.js");
+const GamerModel = require("../models/GamerModel");
 
-const getById = async (req, res) => {
+const findById = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -15,25 +15,19 @@ const getById = async (req, res) => {
   }
 };
 
-const updateGamer = async (req, res) => {
+const editGamer = async (req, res) => {
   const { id } = req.params;
   const { pseudo, email, password, avatar } = req.body;
 
   try {
-    const result = await GamerModel.updateGamer(
-      id,
-      pseudo,
-      email,
-      password,
-      avatar
-    );
+    await GamerModel.updateGamer(id, pseudo, email, password, avatar);
     res.status(200).json({ success: true, message: "Mise à jour effectuée!" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
 
-const deleteGamer = async (req, res) => {
+const removeGamer = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -45,7 +39,7 @@ const deleteGamer = async (req, res) => {
 };
 
 module.exports = {
-  getById,
-  updateGamer,
-  deleteGamer,
+  findById,
+  editGamer,
+  removeGamer,
 };

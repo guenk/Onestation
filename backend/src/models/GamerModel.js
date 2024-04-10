@@ -1,4 +1,4 @@
-const db = require("../utils/database.js");
+const db = require("../utils/database");
 
 class GamerModel {
   /**
@@ -6,13 +6,13 @@ class GamerModel {
    * @param {number} idGamer - L'identifiant du joueur.
    * @returns {Promise<Object>} Une promesse contenant les informations du joueur trouvé.
    */
-  static findById(idGamer) {
+  static getById(idGamer) {
     return new Promise((resolve, reject) => {
       const query = `
       SELECT *, Role.label
       FROM Gamer 
-      INNER JOINT Role ON Gamer.idRole = Role.idRole 
-      WHERE idGamer = ?
+      INNER JOIN Role ON Gamer.id_role = Role.id_role 
+      WHERE id_gamer = ?
       `;
       db.get(query, [idGamer], (err, row) => {
         if (err) {
@@ -36,7 +36,7 @@ class GamerModel {
   static updateGamer(idGamer, pseudo, email, password, avatar) {
     return new Promise((resolve, reject) => {
       const query =
-        "UPDATE Gamer SET pseudo = ?, email = ?, password = ?, avatar = ? WHERE idGamer = ?";
+        "UPDATE Gamer SET pseudo = ?, email = ?, password = ?, avatar = ? WHERE id_gamer = ?";
       db.run(query, [pseudo, email, password, avatar, idGamer], (err, row) => {
         if (err) {
           reject(err);
@@ -54,7 +54,7 @@ class GamerModel {
    */
   static async deleteGamer(idGamer) {
     return new Promise((resolve, reject) => {
-      const query = "DELETE FROM Gamer WHERE idGamer = ?";
+      const query = "DELETE FROM Gamer WHERE id_gamer = ?";
       db.get(query, [idGamer], (err, row) => {
         if (err) {
           reject(err);
