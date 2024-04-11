@@ -1,28 +1,6 @@
-import {useState,useEffect} from 'react'
+import Chat from '../components/Chat'
 
-const Game = ({ socket, roomID }) => {
-    const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState('');
-
-    function sendMessage() {
-        setMessages(messages => [...messages, message])
-        socket.emit('message', { message, roomID })
-    }
-
-    useEffect(() => {
-        socket.on('receiveMessage', ({ receivedMessage }) => {
-            console.log("bonjour");
-            setMessages(messages => [...messages, receivedMessage])
-        })
-    }, [])
-
-    function handleSubmit(e) {
-        if (e.key === "Enter" || e.keyCode === 13) {
-            sendMessage(message, roomID)
-            setMessage('')
-        }
-    }
-
+const Game = ({ socket, roomID, profil }) => {
     return (
         <>
             <div className="flex justify-center gap-10">
@@ -41,22 +19,7 @@ const Game = ({ socket, roomID }) => {
 
                 <div className="w-6/12 bg-slate-300"></div>
 
-                <div className="flex flex-col gap-3 p-5 bg-slate-100">
-                    <div className="flex flex-col">
-                        {
-                            messages.map((message, index) => {
-                                return <p key={index}>{message}</p>
-                            })
-                        }
-                    </div>
-                    <input
-                        type="text"
-                        placeholder="Tapez votre message ici"
-                        onInput={(e) => { setMessage(e.target.value)}}
-                        onKeyUp={handleSubmit}
-                        value={message}
-                    />
-                </div>
+                <Chat socket={socket} roomID={roomID} profil={profil}></Chat>
             </div>
         </>
     );
