@@ -1,72 +1,56 @@
 import './App.css'
 import io from 'socket.io-client'
 import {useEffect, useState} from 'react'
-import CreateGame from "./components/CreateGame.jsx";
+import CreateGame from "./components/CreateGame";
+import Game from "./components/Game"
 import { Routes, Route } from 'react-router-dom';
-import Login from '../pages/login/login'; 
+import Login from '../pages/login/login';
 import Register from '../pages/register/register';
 import { Link } from 'react-router-dom';
 const socket = io('http://localhost:3001')
 
 function App() {
-    const [username, setUsername] = useState('')
-    const [room, setRoom] = useState('');
-    const [message, setMessage] = useState('');
-    const [messageReceived, setMessageReceived] = useState('');
+    const [room, setRoom] = useState();
 
-    function joinRoom(e) {
-        e.preventDefault();
-
-        if (room !== "") {
-            socket.emit("join_room", room);
+    function joinRoom(roomID) {
+        if (roomID === undefined) {
+            socket.emit("join_random_room");
         }
     }
 
-    function createRoom(e) {
-        e.preventDefault();
-        socket.emit("create_room");
-    }
-
-    function sendMessage() {
-        socket.emit('message', { message, room })
-    }
-
-    function handleMessage(e) {
-        setMessage(e.target.value)
-    }
-
-    function handleRoom(e) {
-        setRoom(e.target.value)
+    function createRoom(privateOrNot) {
+        socket.emit("create_game_room", { privateOrNot });
     }
 
     useEffect(() => {
-        socket.on('receivemessage', (data) => {
-            setMessageReceived(data.message)
+        socket.on('game_room_created', (roomID, roomCreated) => {
+            setRoom({ roomID, roomCreated })
         })
 
-        socket.on('room_created', (data) => {
-            setRoom(data.room)
+        socket.on('random_room_joined', ({ roomID, roomJoined }) => {
+            setRoom({ roomID, roomJoined });
         })
     }, [])
 
     return (
-        <>
-            <nav>
-            <Link to="/register">S'inscrire</Link>
+    <>
+        <nav className="flex justify-end gap-5 p-4 font-bold text-white bg-blue-300 align-center">
+            <Link to="/register">S&apos;inscrire</Link>
             <Link to="/login">Se connecter</Link>
-            </nav>
+        </nav>
 
             <Routes>
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={
                     <>
-                        <h1>Guess My Draw</h1>
-                        <CreateGame username={username} setUsername={setUsername} joinRoom={joinRoom} createRoom={createRoom} />
-                        <input type="text" placeholder="Message..." onChange={handleMessage} />
-                        <button onClick={sendMessage}>Send a message</button>
-                        <h1>Message :</h1>
-                        <p>{messageReceived}</p>
+                        <h1 className="m-8 text-4xl font-bold text-center">Guess My Draw</h1>
+                        <CreateGame joinRoom={joinRoom} createRoom={createRoom} />
+
+                        {
+                            room &&
+                            <Game socket={socket} roomID={room.roomID}></Game>
+                        }
                     </>
                 } />
             </Routes>

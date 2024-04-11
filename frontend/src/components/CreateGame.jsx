@@ -2,11 +2,10 @@ import './css/Login.css';
 
 function CreateGame({ joinRoom, createRoom }) {
     return (
-        <form action="" id="formLogin">
-            <input type="text" placeholder="Entrez votre pseudo"/>
-            <button className="inline" onClick={joinRoom}>Jouer</button>
-            <button className="inline" onClick={createRoom}>Créer une room privée</button>
-        </form>
+        <div className="flex justify-center gap-5">
+            <button className="px-4 py-2 bg-green-200 rounded-xl" onClick={() => { joinRoom() }}>Jouer</button>
+            <button className="px-4 py-2 bg-blue-200 rounded-xl" onClick={() => { createRoom(true) }}>Créer une room privée</button>
+        </div>
     );
 }
 
