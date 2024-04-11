@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
     origin: "http://localhost:5173",
-    methos: ["GET", "POST", "PUT"],
+    methods: ["GET", "POST", "PUT"],
   },
 });
 
@@ -25,22 +25,51 @@ const io = new Server(server, {
 // });
 
 
+
+
+const gameRooms = new Map([
+    [1, {
+        users: [ 'P9WFZD1nL7ZMkclAAAB' ],
+        privateOrNot: false,
+        maxUsers: 12,
+        creator: [ 'P9WFZD1nL7ZMkclAAAB' ]
+    }],
+]);
+
+// Connexion du joueur à l'app
 io.on("connection", (socket) => {
-    console.log("A user connected");
 
-    socket.on("message", (data) => {
-        socket.to(data.room).emit("receivemessage", data);
+    // Création d'une partie
+    socket.on("create_game_room", ({privateOrNot}) => {
+        let roomID;
+
+        do {
+            roomID = Math.round(Math.random() * 100);
+        } while (gameRooms.has(roomID));
+
+        gameRooms.set(roomID, { users: [socket.id], privateOrNot: privateOrNot, maxUsers: 10, creator: socket.id });
+
+        socket.join(roomID);
+        socket.emit("game_room_created", {roomID, roomCreated: gameRooms.get(roomID)});
+    })
+
+    // Joindre une game publique aléatoire
+    socket.on("join_random_room", () => {
+        for (const index of gameRooms.keys()) {
+            const room = gameRooms.get(index);
+
+            if (! room.privateOrNot && (room.users.length + 1 <= room.maxUsers)) {
+                socket.join(index);
+                socket.emit("random_room_joined", { roomID: index, roomJoined: room });
+                break;
+            }
+        }
+    })
+
+    // Envoi du message au reste des personnes dans la partie
+    socket.on("message", ({ message, roomID }) => {
+        socket.to(roomID).emit("receiveMessage", { receivedMessage: message });
     });
-
-    socket.on("join_room", (data) => {
-        socket.join(data);
-    })
-
-    socket.on("create_room", () => {
-        let room = Math.round(Math.random() * 10);
-        socket.join(room);
-        socket.emit("room_created", { room });
-    })
 })
 
 server.listen(3001, () => {
