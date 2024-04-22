@@ -1,9 +1,9 @@
-import Chat from '../components/Chat'
-import GameBar from "./GameBar.jsx";
+import Chat from '../chat/Chat.jsx'
+import GameBar from "../gamebar/GameBar.jsx";
 import {useEffect, useState} from "react";
-import GameCanvas from "./GameCanvas.jsx";
-import GamePlayers from "./GamePlayers.jsx"
-import GameToolbar from "./GameToolbar.jsx";
+import GameCanvas from "../gamecanvas/GameCanvas.jsx";
+import GamePlayers from "../GamePlayers.jsx"
+import GameToolbar from "../gametoolbar/GameToolbar.jsx";
 
 const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     const labels = {

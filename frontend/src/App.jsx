@@ -1,9 +1,9 @@
 import './App.css'
 import io from 'socket.io-client'
 import {useEffect, useState} from 'react'
-import CreateGame from "./components/CreateGame";
-import GameState from "./components/GameState"
-import Chat from "./components/Chat"
+import CreateGame from "./components/creategame/CreateGame.jsx";
+import GameState from "./components/gamestate/GameState.jsx"
+import Chat from "./components/chat/Chat.jsx"
 import { Routes, Route } from 'react-router-dom';
 import Login from '../pages/login/login';
 import Register from '../pages/register/register';
