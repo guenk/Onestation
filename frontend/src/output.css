@@ -86,6 +86,11 @@ hr {
 /*
 Add the correct text decoration in Chrome, Edge, and Safari.
 */
+.h-full {
+  height: 100%;
+  padding: 0rem; /* This will add padding of 1rem all around the element */
+  /* Other styles... */
+}
 
 abbr:where([title]) {
   -webkit-text-decoration: underline dotted;

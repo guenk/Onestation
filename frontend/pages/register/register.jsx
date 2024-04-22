@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import loginpicone from '../../src/assets/mainlogo.webp';
+import mainpic from '../../src/assets/mainpic.png';
 import "./style.scss";
 
 export default function Register() {
@@ -37,8 +39,10 @@ export default function Register() {
   return (
     <>
       <ToastContainer />
-      <form onSubmit={handleSubmit}>
+      <div className="mainregister">
+      <form onSubmit={handleSubmit} className="register-form">
         <div>
+        <img className="loginpicone" src={loginpicone} alt="loginpicone" />
           <label>Pseudo:</label>
           <input
             type="text"
@@ -67,6 +71,7 @@ export default function Register() {
         </div>
         <button type="submit">S'inscrire</button>
       </form>
+      </div>
     </>
   );
 }
