@@ -48,7 +48,7 @@ function App() {
         socket.on('random_room_joined', ({ roomID, roomJoined }) => {
             setRoom({ roomID, room: roomJoined });
         })
-    }, [profil.username])
+    }, [])
 
     return (
         <>

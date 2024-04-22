@@ -17,6 +17,7 @@ const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     const [round, setRound]=  useState(1);
     const [label, setLabel] = useState('En attente');
     const [chatMessageAuto, setChatMessageAuto] = useState();
+    const [customWords, setCustomWords] = useState('');
 
     // function handleGameState() {
     //     switch (gameState) {
@@ -27,9 +28,19 @@ const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     //     }
     // }
 
+    function lancerPartie() {
+        socket.emit("start_game", { roomID });
+    }
+
     useEffect(() => {
         setChatMessageAuto(messageAuto);
     }, [messageAuto, setMessageAuto])
+
+    useEffect(() => {
+        socket.on('game_started', ({customWords}) => {
+            setChatMessageAuto('Le jeu vient de commencer avec les mots : ' + customWords);
+        })
+    })
 
     return (
         <div id="game-board" className="m-4">
@@ -37,7 +48,7 @@ const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
 
             <GamePlayers />
 
-            <GameCanvas />
+            <GameCanvas lancerPartie={lancerPartie} customWords={customWords} setCustomWords={setCustomWords} setChatMessageAuto={setChatMessageAuto}></GameCanvas>
 
             <Chat socket={socket} roomID={roomID} profil={profil} chatMessageAuto={chatMessageAuto}
                   setChatMessageAuto={setChatMessageAuto}></Chat>
