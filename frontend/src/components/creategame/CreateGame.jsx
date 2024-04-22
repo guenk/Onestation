@@ -1,4 +1,4 @@
-import './css/Login.css';
+import '../css/Login.css';
 
 function CreateGame({ joinRoom, createRoom, profil }) {
     return (

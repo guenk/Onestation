@@ -3,25 +3,26 @@ import { LOGIN_SUCCESS, LOGOUT } from './authActions';  // Vérifie que le chemi
 const initialState = {
   token: null,
   isAuthenticated: false,
+  loading: true,
+  user: null
 };
-
-function authReducer(state = initialState, action) {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        token: action.payload.token,
         isAuthenticated: true,
+        token: action.payload.token,
       };
     case LOGOUT:
       return {
         ...state,
-        token: null,
         isAuthenticated: false,
+        token: null,
       };
     default:
       return state;
   }
-}
+};
 
 export default authReducer;
