@@ -2,7 +2,7 @@ import Chat from '../chat/Chat.jsx'
 import GameBar from "../gamebar/GameBar.jsx";
 import {useEffect, useState} from "react";
 import GameCanvas from "../gamecanvas/GameCanvas.jsx";
-import GamePlayers from "../GamePlayers.jsx"
+import GamePlayers from "../gameplayers/GamePlayers.jsx"
 import GameToolbar from "../gametoolbar/GameToolbar.jsx";
 
 const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
