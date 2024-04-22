@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import GameCanvas from "../gamecanvas/GameCanvas.jsx";
 import GamePlayers from "../gameplayers/GamePlayers.jsx"
 import GameToolbar from "../gametoolbar/GameToolbar.jsx";
+import './GameState.css'
 
 const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     const labels = {
@@ -31,22 +32,19 @@ const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     }, [messageAuto, setMessageAuto])
 
     return (
-        <>
-            <div className="m-4 flex">
-                <GameBar round={round} label={label}></GameBar>
+        <div id="game-board" className="m-4">
+            <GameBar round={round} label={label}></GameBar>
 
-                <GamePlayers />
+            <GamePlayers />
 
-                <GameCanvas />
+            <GameCanvas />
 
-                <Chat socket={socket} roomID={roomID} profil={profil} chatMessageAuto={chatMessageAuto}
-                      setChatMessageAuto={setChatMessageAuto}></Chat>
-            </div>
+            <Chat socket={socket} roomID={roomID} profil={profil} chatMessageAuto={chatMessageAuto}
+                  setChatMessageAuto={setChatMessageAuto}></Chat>
 
             <GameToolbar roomID={roomID}></GameToolbar>
-        </>
-    )
-        ;
+        </div>
+    );
 }
 
 export default GameState;
