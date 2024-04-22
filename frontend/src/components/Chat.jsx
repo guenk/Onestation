@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 
-const Chat = ({ socket, roomID, profil }) => {
+const Chat = ({ socket, roomID, profil, chatMessageAuto, setChatMessageAuto }) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
 
@@ -13,7 +13,12 @@ const Chat = ({ socket, roomID, profil }) => {
         socket.on('receiveMessage', ({ receivedMessage, sender }) => {
             setMessages(messages => [...messages, {message: receivedMessage, sender}])
         })
-    }, [])
+    }, [socket])
+
+    useEffect(() => {
+        if (chatMessageAuto !== undefined && chatMessageAuto !== '')
+            setMessages(messages => [...messages, {message: chatMessageAuto, sender: { username: 'Bot'}}])
+    }, [chatMessageAuto, setChatMessageAuto])
 
     function handleSubmit(e) {
         if (e.key === "Enter" || e.keyCode === 13) {
@@ -23,11 +28,11 @@ const Chat = ({ socket, roomID, profil }) => {
     }
 
     return (
-        <div className="flex flex-col justify-end flex-1 h-full border rounded-xl bg-slate-100">
+        <div id="game-chat" className="flex flex-col justify-end flex-1 h-full border rounded-xl bg-slate-100">
             <div className="flex flex-col gap-2 p-3 overflow-auto">
                 {
                     messages.map((message, index) => {
-                        return <p key={index}><span style={{ color: message.sender.color, fontWeight: 'bold' }}>{message.sender.username}:</span> {message.message}</p>
+                        return <p key={index}><span style={{ color: message.sender.color, fontWeight: 'bold' }}>{message.sender.username}{": "}</span> {message.message}</p>
                     })
                 }
             </div>

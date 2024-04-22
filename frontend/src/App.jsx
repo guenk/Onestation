@@ -2,7 +2,7 @@ import './App.css'
 import io from 'socket.io-client'
 import {useEffect, useState} from 'react'
 import CreateGame from "./components/CreateGame";
-import Game from "./components/Game"
+import GameState from "./components/GameState"
 import Chat from "./components/Chat"
 import { Routes, Route } from 'react-router-dom';
 import Login from '../pages/login/login';
@@ -12,6 +12,7 @@ const socket = io('http://localhost:3001')
 
 function App() {
     const [room, setRoom] = useState({ roomID: null, room: null });
+    const [messageAuto, setMessageAuto] = useState();
 
     // Normalement stocké en BDD 
     const profil = {
@@ -38,12 +39,16 @@ function App() {
 
         socket.on('game_room_created', ({roomID, roomCreated}) => {
             setRoom({ roomID, room: roomCreated })
+
+            if (roomID !== 0 && roomID !== null) {
+                setMessageAuto(profil.username + ' est maintenant propriétaire de la partie');
+            }
         })
 
         socket.on('random_room_joined', ({ roomID, roomJoined }) => {
             setRoom({ roomID, room: roomJoined });
         })
-    }, [])
+    }, [profil.username])
 
     return (
         <>
@@ -57,23 +62,20 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={
                     <>
-                        { /* -- Partie accueil -- */ }
-
-                        <div className="flex h-[calc(100%-64px)] justify-evenly">
-                            <div className='flex flex-col items-center justify-center flex-1 gap-5'>
-                                <h1 className="mb-8 text-4xl font-bold">Guess My Draw</h1>
-                                <CreateGame joinRoom={joinRoom} createRoom={createRoom} profil={profil} />
-                            </div>
-                            
-                            <div className='h-full p-5'>
-                                <Chat socket={socket} roomID={room.roomID} profil={profil}></Chat>
-                            </div>
-                        </div>
-
                         {
-                            // -- Partie salle de jeux --
-                            room.roomID != null && room.roomID != 0 ?
-                            <Game socket={socket} roomID={room.roomID} profil={profil}></Game> : ''
+                            room.roomID === null || room.roomID === 0 ?
+                                <div className="flex h-[calc(100%-64px)] justify-evenly">
+                                    <div className='flex flex-col items-center justify-center flex-1 gap-5'>
+                                        <h1 className="mb-8 text-4xl font-bold">Guess My Draw</h1>
+                                        <CreateGame joinRoom={joinRoom} createRoom={createRoom} profil={profil} />
+                                    </div>
+
+                                    <div className='h-full p-5'>
+                                        <Chat socket={socket} roomID={room.roomID} profil={profil}></Chat>
+                                    </div>
+                                </div>
+                            :
+                                <GameState socket={socket} roomID={room.roomID} profil={profil} messageAuto={messageAuto} setMessageAuto={setMessageAuto}></GameState>
                         }
                     </>
                 } />
