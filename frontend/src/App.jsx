@@ -21,12 +21,18 @@ function App() {
     }
 
     function joinRoom(roomID) {
+        const queryParameters = new URLSearchParams(window.location.search)
+        roomID = queryParameters.toString().split('=')[0];
+
         if (roomID === undefined) {
             socket.emit("join_random_room", { profil });
+        } else {
+            socket.emit("join_room", { roomID, profil });
         }
     }
 
     function createRoom(profil, privateOrNot) {
+        console.log(profil)
         socket.emit("create_game_room", { profil, privateOrNot });
     }
 
@@ -45,7 +51,7 @@ function App() {
             }
         })
 
-        socket.on('random_room_joined', ({ roomID, roomJoined }) => {
+        socket.on('room_joined', ({ roomID, roomJoined }) => {
             setRoom({ roomID, room: roomJoined });
         })
     }, [])
