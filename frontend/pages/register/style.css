@@ -1,3 +1,13 @@
+.mainregister {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  background-image: url("../../src/assets/maintwo.webp");
+  background-size: 100% 120%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 .register-form {
   display: flex;
@@ -41,4 +51,4 @@
 }
 .register-form button:hover {
   background-color: #0000cc;
-}/*# sourceMappingURL=style.css.map */
+}
