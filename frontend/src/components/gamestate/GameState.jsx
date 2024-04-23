@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import GameCanvas from "../gamecanvas/GameCanvas.jsx";
 import GamePlayers from "../gameplayers/GamePlayers.jsx"
 import GameToolbar from "../gametoolbar/GameToolbar.jsx";
-import './GameState.css'
+import './GameState.scss'
 
 const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
     const labels = {
