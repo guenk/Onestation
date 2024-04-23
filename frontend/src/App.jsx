@@ -65,13 +65,6 @@ function App() {
             socket.off('game_room_created');
             socket.off('random_room_joined');
         };
-    }, [profil.username]); 
-
-        return () => {
-            socket.off('home_room_joined');
-            socket.off('game_room_created');
-            socket.off('random_room_joined');
-        };
     }, [profil.username]);
 
     return (
