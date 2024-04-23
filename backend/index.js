@@ -66,7 +66,6 @@ io.on("connection", (socket) => {
 
         socket.join(roomID);
         socket.emit("game_room_created", {roomID, roomCreated: gameRooms.get(roomID)});
-        console.log(gameRooms)
     })
 
     // Joindre une partie publique aléatoire
@@ -85,9 +84,7 @@ io.on("connection", (socket) => {
 
     // Joindre une partie
     socket.on("join_room", ({roomID, profil}) => {
-        console.log(gameRooms)
-        console.log(roomID.trim())
-        const room = gameRooms.get(Number(roomID.trim()));
+        const room = gameRooms.get(roomID);
 
         if (room.users.length + 1 <= room.maxUsers) {
             socket.join(roomID);

@@ -28,7 +28,7 @@ function App() {
 
     function joinRoom(roomID) {
         const queryParameters = new URLSearchParams(window.location.search)
-        roomID = queryParameters.toString().split('=')[0];
+        roomID = Number(queryParameters.toString().split('=')[0].trim());
 
         if (roomID === undefined) {
             socket.emit("join_random_room", { profil });
@@ -38,7 +38,6 @@ function App() {
     }
 
     function createRoom(profil, privateOrNot) {
-        console.log(profil)
         socket.emit("create_game_room", { profil, privateOrNot });
     }
 
@@ -56,7 +55,7 @@ function App() {
             }
         });
 
-        socket.on('random_room_joined', ({ roomID, roomJoined }) => {
+        socket.on('room_joined', ({ roomID, roomJoined }) => {
             setRoom({ roomID, room: roomJoined });
         });
 
@@ -90,7 +89,7 @@ function App() {
                                         </div>
                                     </div>
                                 :
-                                    <GameState socket={socket} roomID={room.roomID} profil={profil} messageAuto={messageAuto} setMessageAuto={setMessageAuto}></GameState>
+                                    <GameState socket={socket} roomID={room.roomID} room={room.room} profil={profil} messageAuto={messageAuto} setMessageAuto={setMessageAuto}></GameState>
                             }
                         </>
                     } />
