@@ -6,7 +6,7 @@ import GamePlayers from "../gameplayers/GamePlayers.jsx"
 import GameToolbar from "../gametoolbar/GameToolbar.jsx";
 import './GameState.scss'
 
-const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
+const GameState = ({ socket, roomID, room, profil, messageAuto, setMessageAuto }) => {
     const labels = {
         1: "En attente",
         2: "Devinez le mot",
@@ -48,7 +48,7 @@ const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
 
             <GamePlayers />
 
-            <GameCanvas lancerPartie={lancerPartie} customWords={customWords} setCustomWords={setCustomWords} setChatMessageAuto={setChatMessageAuto}></GameCanvas>
+            <GameCanvas socket={socket} room={room} lancerPartie={lancerPartie} customWords={customWords} setCustomWords={setCustomWords} setChatMessageAuto={setChatMessageAuto}></GameCanvas>
 
             <Chat socket={socket} roomID={roomID} profil={profil} chatMessageAuto={chatMessageAuto}
                   setChatMessageAuto={setChatMessageAuto}></Chat>

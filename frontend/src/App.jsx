@@ -27,8 +27,13 @@ function App() {
     };
 
     function joinRoom(roomID) {
+        const queryParameters = new URLSearchParams(window.location.search)
+        roomID = Number(queryParameters.toString().split('=')[0].trim());
+
         if (roomID === undefined) {
             socket.emit("join_random_room", { profil });
+        } else {
+            socket.emit("join_room", { roomID, profil });
         }
     }
 
@@ -36,7 +41,7 @@ function App() {
         socket.emit("create_game_room", { profil, privateOrNot });
     }
 
-    useEffect(() => {
+ useEffect(() => {
         socket.emit('home_room');
 
         socket.on('home_room_joined', ({roomID, roomJoined}) => {
@@ -50,7 +55,7 @@ function App() {
             }
         });
 
-        socket.on('random_room_joined', ({ roomID, roomJoined }) => {
+        socket.on('room_joined', ({ roomID, roomJoined }) => {
             setRoom({ roomID, room: roomJoined });
         });
 
@@ -84,7 +89,7 @@ function App() {
                                         </div>
                                     </div>
                                 :
-                                    <GameState socket={socket} roomID={room.roomID} profil={profil} messageAuto={messageAuto} setMessageAuto={setMessageAuto}></GameState>
+                                    <GameState socket={socket} roomID={room.roomID} room={room.room} profil={profil} messageAuto={messageAuto} setMessageAuto={setMessageAuto}></GameState>
                             }
                         </>
                     } />

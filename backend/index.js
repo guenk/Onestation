@@ -32,13 +32,15 @@ const gameRooms = new Map([
         users: [ 'Kilian' ], // Liste d'utilisateurs de la salle de jeux
         privateOrNot: false, // Salle de jeux publique
         maxUsers: 12, // Nombre d'utilisateurs autorisés
-        creator: [ 'Kilian' ] // ID de l'utilisateur/la socket ayant créé la salle de jeux
+        creator: [ 'Kilian' ], // ID de l'utilisateur/la socket ayant créé la salle de jeux
+        customWords: ['patates', 'voiture']
     }],
     [1, {
         users : [ 'Jean Patrick' ],
         privateOrNot: false,
         maxUsers: 10,
-        creator: [ 'Jean Patrick' ]
+        creator: [ 'Jean Patrick' ],
+        customWords: []
     }]
 ]);
 
@@ -66,23 +68,40 @@ io.on("connection", (socket) => {
         socket.emit("game_room_created", {roomID, roomCreated: gameRooms.get(roomID)});
     })
 
-    // Joindre une game publique aléatoire
-    socket.on("join_random_room", (profil) => {
+    // Joindre une partie publique aléatoire
+    socket.on("join_random_room", ({profil}) => {
         for (const roomID of gameRooms.keys()) {
             const room = gameRooms.get(roomID);
 
             if (! room.privateOrNot && (room.users.length + 1 <= room.maxUsers)) {
                 socket.join(roomID);
                 room.users.push(profil.username);
-                socket.emit("random_room_joined", { roomID, roomJoined: room });
+                socket.emit("room_joined", { roomID, roomJoined: room });
                 break;
             }
+        }
+    })
+
+    // Joindre une partie
+    socket.on("join_room", ({roomID, profil}) => {
+        const room = gameRooms.get(roomID);
+
+        if (room.users.length + 1 <= room.maxUsers) {
+            socket.join(roomID);
+            room.users.push(profil.username);
+            socket.emit("room_joined", { roomID, roomJoined: room });
         }
     })
 
     // Envoi du message au reste des personnes dans la partie
     socket.on("message", ({ message, roomID, profil }) => {
         socket.to(roomID).emit("receiveMessage", { receivedMessage: message, sender: profil });
+    });
+
+    // Début d'une partie
+    socket.on("start_game", ({ roomID, customWords }) => {
+        gameRooms.get(roomID).customWords = customWords;
+        io.to(roomID).emit("game_started");
     });
 })
 
