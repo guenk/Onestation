@@ -19,7 +19,7 @@ const Chat = ({
 
   function sendGuess() {
     setMessages((messages) => [...messages, { message, sender: profil }]);
-    socket.emit("guess", { message, roomID, profil });
+    socket.emit("guess", { message, roomID, socketID: socket.id, profil });
   }
 
   useEffect(() => {
@@ -29,7 +29,19 @@ const Chat = ({
         { message: receivedMessage, sender },
       ]);
     });
-  }, [socket]);
+
+    socket.on("victory", ({ sender }) => {
+      setChatMessageAuto();
+    });
+
+    socket.on("close_to_guess", ({ socketID, sender }) => {
+      if (socketID === socket.id) {
+        setChatMessageAuto("Vous êtes proche !");
+      } else {
+        setChatMessageAuto(sender.username + " est proche !");
+      }
+    });
+  }, [setChatMessageAuto, socket]);
 
   useEffect(() => {
     if (chatMessageAuto !== undefined && chatMessageAuto !== "")

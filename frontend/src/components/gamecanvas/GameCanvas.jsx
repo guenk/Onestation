@@ -86,9 +86,7 @@ const GameCanvas = ({
 
     case 2:
       return (
-        <div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl">
-          <p className="text-center">Le mot est : {words}</p>
-        </div>
+        <div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl"></div>
       );
   }
 };

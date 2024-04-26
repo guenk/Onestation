@@ -146,13 +146,13 @@ io.on("connection", (socket) => {
   });
 
   // Envoi du message au reste des personnes dans la partie
-  socket.on("guess", ({ message, roomID, profil }) => {
+  socket.on("guess", ({ message, roomID, socketID, profil }) => {
     let room = gameRooms.get(roomID);
 
     if (message === room.word) {
-      io.to(roomID).emit("victory", { profil });
-    } else if (getNotSameCount(message, room.word)) {
-      io.to(roomID).emit("close_to_guess", { profil });
+      io.to(roomID).emit("victory", { sender: profil });
+    } else if (getErrorMargin(message, room.word)) {
+      io.to(roomID).emit("close_to_guess", { socketID, sender: profil });
     }
   });
 });
@@ -161,24 +161,30 @@ server.listen(3001, () => {
   console.log("Server running on port 3001");
 });
 
-// canard banc
-// canard canapes
-function getNotSameCount(str1, str2) {
-  let str1Array = [...str1];
-  let str2Array = [...str2];
+function normalizeString(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
 
-  let countErreur = 0;
+function getErrorMargin(str1, str2) {
+  let errorCount = 0;
 
-  for (let i = 0; i < str1Array.length; i++) {
-    if (str1Array[i] !== str2Array[i]) {
-      if (str2Array[i + 1] !== undefined && str1Array[i] !== str2Array[i + 1]) {
-        if (
-          str2Array[i - 1] !== undefined &&
-          str1Array[i] !== str2Array[i - 1]
-        ) {
-          countErreur++;
-        }
-      }
+  // Normalize the strings to remove accents
+  str1 = normalizeString(str1);
+  str2 = normalizeString(str2);
+
+  // Truncate the longer string to the length of the shorter one
+  if (str1.length > str2.length) {
+    str1 = str1.substring(0, str2.length);
+  } else if (str2.length > str1.length) {
+    str2 = str2.substring(0, str1.length);
+  }
+
+  // Compare the characters
+  for (let i = 0; i < str1.length; i++) {
+    if (str1[i] !== str2[i]) {
+      errorCount++;
     }
   }
+
+  return errorCount;
 }
