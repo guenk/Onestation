@@ -10,11 +10,11 @@ const register = async (req, res) => {
     }
 
     // Générer le token uniquement si les informations utilisateur sont disponibles
-    const { IdUtilisateur, email } = response;
+    const { IdUtilisateur, email, avatar } = response; // Inclure l'avatar dans la réponse
     const token = generateToken({ IdUtilisateur, email });
 
     console.log("Token généré:", token); // Ajout du log
-    res.status(201).json({ success: true, message: "Inscription réussie.", token });
+    res.status(201).json({ success: true, message: "Inscription réussie.", token, avatar });
   } catch (err) {
     console.error(err);
     res.status(500).json({
