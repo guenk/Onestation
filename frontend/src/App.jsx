@@ -9,6 +9,8 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import Login from "../pages/login/login";
 import Register from "../pages/register/register";
+import Header from "./components/header/Header";
+import Profil from "./pages/profil/Profil";
 import { PersistGate } from "redux-persist/integration/react";
 
 const socket = io("http://localhost:3001");
@@ -51,7 +53,7 @@ function App() {
       setRoom({ roomID, room: roomCreated });
       if (roomID !== 0 && roomID !== null) {
         setMessageAuto(
-          `${profil.username} est maintenant propriétaire de la partie`,
+          `${profil.username} est maintenant propriétaire de la partie`
         );
       }
     });
@@ -77,11 +79,12 @@ function App() {
             path="/"
             element={
               <>
-                <div className="authentication-status">
+              <Header/>
+                {/* <div className="authentication-status">
                   {isAuthenticated
                     ? `Logged in with token: ${token}`
                     : "Not logged in"}
-                </div>
+                </div> */}
                 {room.roomID === null || room.roomID === 0 ? (
                   <div className="flex h-screen justify-evenly">
                     <div className="flex flex-col items-center justify-center flex-1 gap-5">
@@ -113,6 +116,7 @@ function App() {
               </>
             }
           />
+          <Route path="/profile" element={<Profil />} />
         </Routes>
       </PersistGate>
     </Provider>
