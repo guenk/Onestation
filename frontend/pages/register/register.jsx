@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Ajout pour la redirection
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import loginpicone from '../../src/assets/mainlogo.webp';
-import mainpic from '../../src/assets/mainpic.png';
 import "./style.scss";
 
 export default function Register() {
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Hook pour la navigation
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/auth/register', {
+      const response = await fetch('http://localhost:3001/api/auth/register', { // Assurez-vous que l'URL est correcte
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,16 +24,17 @@ export default function Register() {
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de l\'inscription');
+        const errorData = await response.json(); // Récupération de la réponse en cas d'erreur
+        throw new Error(errorData.message || 'Erreur lors de l\'inscription');
       }
 
-      const data = await response.json();
+      const data = await response.json(); // Extraction des données de la réponse
       console.log('Inscription réussie:', data);
-      // Gérer la réussite, par exemple en redirigeant l'utilisateur ou en stockant le token JWT
       toast.success("Inscription réussie !");
+      navigate('/login'); // Rediriger vers la page de connexion ou autre selon le besoin
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
-      toast.error("Erreur lors de l'inscription.");
+      toast.error(error.message || "Erreur lors de l'inscription.");
     }
   };
 
@@ -42,7 +44,7 @@ export default function Register() {
       <div className="mainregister">
       <form onSubmit={handleSubmit} className="register-form">
         <div>
-        <img className="loginpicone" src={loginpicone} alt="loginpicone" />
+          <img className="loginpicone" src={loginpicone} alt="Logo" />
           <label>Pseudo:</label>
           <input
             type="text"
