@@ -24,8 +24,7 @@ app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
 
-
-
+// Connexion du joueur à l'app
 
 const gameRooms = new Map([
     [0, {

@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginSuccess } from '../../src/redux/authActions';// Assurez-vous que le chemin est correct
-import loginpicone from '../../src/assets/mainlogo.webp'; // Assurez-vous que le chemin est correct
+import { loginSuccess } from '../../src/redux/authActions';
+import loginpicone from '../../src/assets/mainlogo.webp';
 import "./style.scss";
 
 export default function Login() {
-  const [pseudo, setPseudo] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // Ajout de useDispatch
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,7 +21,7 @@ export default function Login() {
       const response = await fetch('http://localhost:3001/api/auth/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ pseudo, email, password }),
       });
@@ -31,10 +31,11 @@ export default function Login() {
       }
 
       const data = await response.json();
-      console.log('Connexion réussie:', data);
-      dispatch(loginSuccess(data.token));  // Dispatch de l'action loginSuccess avec le token
+      console.log("Connexion réussie:", data);
+      dispatch(loginSuccess(data.token, data.user));
+      // Dispatch de l'action loginSuccess avec le token et les infos utilisateurs
       toast.success("Connexion réussie !");
-      navigate('/');  // Redirection vers la page d'accueil
+      navigate("/"); // Redirection vers la page d'accueil
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
       toast.error("Erreur lors de la connexion.");
