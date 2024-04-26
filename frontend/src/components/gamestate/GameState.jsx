@@ -1,50 +1,112 @@
-import Chat from '../chat/Chat.jsx'
+import Chat from "../chat/Chat.jsx";
 import GameBar from "../gamebar/GameBar.jsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import GameCanvas from "../gamecanvas/GameCanvas.jsx";
-import GamePlayers from "../gameplayers/GamePlayers.jsx"
+import GamePlayers from "../gameplayers/GamePlayers.jsx";
 import GameToolbar from "../gametoolbar/GameToolbar.jsx";
-import './GameState.scss'
+import "./GameState.scss";
 
-const GameState = ({ socket, roomID, profil, messageAuto, setMessageAuto }) => {
-    const labels = {
-        1: "En attente",
-        2: "Devinez le mot",
-        3: "Dessinez le mot"
-    };
+const GameState = ({
+  socket,
+  roomID,
+  room,
+  profil,
+  messageAuto,
+  setMessageAuto,
+}) => {
+  const labels = {
+    1: "En attente",
+    2: "Devinez le mot",
+    3: "Dessinez le mot",
+  };
 
-    const [gameState, setGameState] = useState(1);
-    const [round, setRound]=  useState(1);
-    const [label, setLabel] = useState('En attente');
-    const [chatMessageAuto, setChatMessageAuto] = useState();
+  const [etape, setEtape] = useState(0);
+  const [round, setRound] = useState(1);
+  const [label, setLabel] = useState("En attente");
+  const [chatMessageAuto, setChatMessageAuto] = useState();
+  const [words, setWords] = useState("");
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
-    // function handleGameState() {
-    //     switch (gameState) {
-    //         case 1:
-    //             setLabel(labels[1]);
-    //             setRound(1);
-    //             break;
-    //     }
-    // }
+  function changerEtape(etapeEnCours, mot = null) {
+    switch (etapeEnCours) {
+      case 1:
+        setLabel("En attente");
+        socket.emit("new_step", {
+          roomID,
+          customWords: words,
+          etapeEnCours: 1,
+        });
+        break;
 
-    useEffect(() => {
-        setChatMessageAuto(messageAuto);
-    }, [messageAuto, setMessageAuto])
+      case 2:
+        socket.emit("new_step", {
+          roomID,
+          customWords: mot,
+          etapeEnCours: 2,
+        });
+    }
+  }
 
-    return (
-        <div id="game-board" className="m-4">
-            <GameBar round={round} label={label}></GameBar>
+  useEffect(() => {
+    setChatMessageAuto(messageAuto);
+  }, [messageAuto, setMessageAuto]);
 
-            <GamePlayers />
-
-            <GameCanvas />
-
-            <Chat socket={socket} roomID={roomID} profil={profil} chatMessageAuto={chatMessageAuto}
-                  setChatMessageAuto={setChatMessageAuto}></Chat>
-
-            <GameToolbar roomID={roomID}></GameToolbar>
-        </div>
+  useEffect(() => {
+    socket.on(
+      "game_started",
+      ({ etapeEnCours, currentPlayer, chosenWords }) => {
+        setEtape(etapeEnCours);
+        setCurrentPlayer(currentPlayer);
+        setWords(chosenWords);
+      },
     );
-}
+
+    socket.on("word_chosen", ({ etapeEnCours, word }) => {
+      setEtape(etapeEnCours);
+      setWords(word);
+    });
+  });
+
+  return (
+    <div id="game-board" className="m-4">
+      <GameBar
+        round={round}
+        label={label}
+        etape={etape}
+        words={words}
+        socket={socket}
+        player={currentPlayer}
+      ></GameBar>
+
+      <GamePlayers />
+
+      <GameCanvas
+        socket={socket}
+        room={room}
+        etape={etape}
+        changerEtape={changerEtape}
+        words={words}
+        setWords={setWords}
+        setChatMessageAuto={setChatMessageAuto}
+        player={currentPlayer}
+      ></GameCanvas>
+
+      <Chat
+        socket={socket}
+        roomID={roomID}
+        profil={profil}
+        chatMessageAuto={chatMessageAuto}
+        setChatMessageAuto={setChatMessageAuto}
+        player={currentPlayer}
+        etape={etape}
+      ></Chat>
+
+      <GameToolbar
+        roomID={roomID}
+        setChatMessageAuto={setChatMessageAuto}
+      ></GameToolbar>
+    </div>
+  );
+};
 
 export default GameState;
