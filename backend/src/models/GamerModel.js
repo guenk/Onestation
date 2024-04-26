@@ -2,14 +2,14 @@ const db = require("../utils/database");
 
 class GamerModel {
   /**
-   * Recherche un joueur par son identifiant.
+   * Recherche un joueur par son identifiant et renvoie uniquement certaines données et son rôle.
    * @param {number} idGamer - L'identifiant du joueur.
    * @returns {Promise<Object>} Une promesse contenant les informations du joueur trouvé.
    */
   static getById(idGamer) {
     return new Promise((resolve, reject) => {
       const query = `
-      SELECT *, Role.label
+      SELECT id_gamer, pseudo, email, avatar, Role.label
       FROM Gamer 
       INNER JOIN Role ON Gamer.id_role = Role.id_role 
       WHERE id_gamer = ?

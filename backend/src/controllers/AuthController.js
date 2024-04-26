@@ -1,12 +1,15 @@
 const models = require("../models/AuthManager");
-const { generateToken } = require('../middlewares/Auth');
+const gamerModels = require("../models/GamerModel");
+const { generateToken } = require("../middlewares/Auth");
 
 const register = async (req, res) => {
   try {
     const response = await models.registerUser(req.body);
 
     if (!response || !response.IdUtilisateur || !response.email) {
-      throw new Error("Les informations utilisateur sont requises pour générer un token.");
+      throw new Error(
+        "Les informations utilisateur sont requises pour générer un token."
+      );
     }
 
     // Générer le token uniquement si les informations utilisateur sont disponibles
@@ -29,7 +32,10 @@ const login = async (req, res) => {
   try {
     console.log("Requête de connexion reçue:", req.body); // Ajout du log
     const { IdUtilisateur, email } = await models.authenticateUser(req.body);
-    console.log("Utilisateur trouvé avec les informations suivantes:", { IdUtilisateur, email }); // Ajout du log
+    console.log("Utilisateur trouvé avec les informations suivantes:", {
+      IdUtilisateur,
+      email,
+    }); // Ajout du log
 
     if (!IdUtilisateur) {
       console.log("Aucun utilisateur trouvé avec ces informations.");
@@ -38,13 +44,19 @@ const login = async (req, res) => {
         message: "Aucun utilisateur trouvé avec ces informations.",
       });
     } else {
-      console.log("Connexion réussie pour l'utilisateur:", { IdUtilisateur, email }); // Ajout du log
+      const user = await gamerModels.getById(IdUtilisateur);
+      console.log("Connexion réussie pour l'utilisateur:", {
+        IdUtilisateur,
+        email,
+      }); // Ajout du log
       const token = generateToken({ IdUtilisateur, email });
-      res.json({ success: true, message: "Connexion réussie.", token });
+      res.json({ success: true, message: "Connexion réussie.", token, user });
     }
   } catch (err) {
     console.error("Erreur lors de la connexion:", err); // Ajout du log
-    res.status(500).json({ success: false, message: "Erreur lors de la connexion." });
+    res
+      .status(500)
+      .json({ success: false, message: "Erreur lors de la connexion." });
   }
 };
 
