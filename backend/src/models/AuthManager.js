@@ -71,7 +71,7 @@ static async authenticateUser({ email, password }) {
       throw new Error("Mot de passe incorrect.");
   }
 
-  return { IdUtilisateur: user.id_gamer, email: user.email };
+  return user;
 }
 }
 

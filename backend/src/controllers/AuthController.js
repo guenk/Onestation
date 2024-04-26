@@ -33,26 +33,26 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     console.log("Requête de connexion reçue:", req.body); // Ajout du log
-    const { IdUtilisateur, email } = await models.authenticateUser(req.body);
+    const { id_gamer, email, pseudo, avatar, id_role } = await models.authenticateUser(req.body);
     console.log("Utilisateur trouvé avec les informations suivantes:", {
-      IdUtilisateur,
-      email,
+      id_gamer,
+      email
     }); // Ajout du log
 
-    if (!IdUtilisateur) {
+    if (!id_gamer) {
       console.log("Aucun utilisateur trouvé avec ces informations.");
       res.status(401).json({
         success: false,
         message: "Aucun utilisateur trouvé avec ces informations.",
       });
     } else {
-      const user = await gamerModels.getById(IdUtilisateur);
+      // const user = await gamerModels.getById(IdUtilisateur);
       console.log("Connexion réussie pour l'utilisateur:", {
-        IdUtilisateur,
+        id_gamer,
         email,
       }); // Ajout du log
-      const token = generateToken({ IdUtilisateur, email });
-      res.json({ success: true, message: "Connexion réussie.", token, user });
+      const token = generateToken({ id_gamer, email });
+      res.json({ success: true, message: "Connexion réussie.", token, user: { id_gamer, email, pseudo, avatar, id_role} });
     }
   } catch (err) {
     console.error("Erreur lors de la connexion:", err); // Ajout du log

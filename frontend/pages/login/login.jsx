@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginSuccess } from '../../src/redux/authActions';
-import loginpicone from '../../src/assets/mainlogo.webp';
+import { loginSuccess } from "../../src/redux/authActions";
+import loginpicone from "../../src/assets/mainlogo.webp";
 import "./style.scss";
 
 export default function Login() {
@@ -18,8 +18,8 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -27,17 +27,16 @@ export default function Login() {
       });
 
       if (!response.ok) {
-        throw new Error('Erreur lors de la connexion');
+        throw new Error("Erreur lors de la connexion");
       }
 
       const data = await response.json();
-      console.log("Connexion réussie:", data);
       dispatch(loginSuccess(data.token, data.user));
       // Dispatch de l'action loginSuccess avec le token et les infos utilisateurs
       toast.success("Connexion réussie !");
       navigate("/"); // Redirection vers la page d'accueil
     } catch (error) {
-      console.error('Erreur lors de la connexion:', error);
+      console.error("Erreur lors de la connexion:", error);
       toast.error("Erreur lors de la connexion.");
     }
   };
