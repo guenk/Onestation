@@ -2,8 +2,10 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../assets/mainlogo.webp";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from "../../redux/authActions"
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../redux/authActions";
+import { Tooltip } from "react-tooltip";
+
 import "./style.scss";
 
 const navigation = [
@@ -16,14 +18,12 @@ function classNames(...classes) {
 }
 
 export default function Header() {
-
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
 
   const handleLogout = async () => {
     try {
-        dispatch(logout());
+      dispatch(logout());
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -39,7 +39,6 @@ export default function Header() {
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-black-400 pl-5">
                   <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (
@@ -49,7 +48,7 @@ export default function Header() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:justify-evenly">
                 <div className="flex flex-shrink-0 items-center">
-                  <img className="h-24 w-auto" src={logo} alt="Your Company" />
+                  <img className="h-24 w-auto" src={logo} alt="guess my draw logo" />
                 </div>
                 <div className="hidden sm:ml-6 sm:block flex flex-col">
                   <div className="flex space-x-4">
@@ -64,34 +63,49 @@ export default function Header() {
                     ))}
                   </div>
                 </div>
-              
-              {isAuthenticated ? (
-          <div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2">
-          {user && (
-            <div className="flex items-center gap-2">
-              <img
-                className="h-8 w-8 rounded-full"
-                src={logo}
-                alt="avatar"
-              />
-              <p className="">{user.pseudo}</p>
-            </div>
-          )}
-          <button onClick={handleLogout} className="font-bold authButton">Déconnexion</button>
-        </div>
-              ) : (
-              <div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2">
-                  <Link to="/login">
-                    <button className="font-bold authButton">
-                      Se connecter
+
+                {isAuthenticated ? (
+                  <div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
+                    {user && (
+                      <Link to={`/profile/${user?.id_gamer}`}>
+                        <div
+                          className="flex items-center gap-2"
+                          data-tip
+                          data-tooltip-id="tooltip-profil"
+                          data-tooltip-content="Voir mon profil"
+                        >
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={user.avatar}
+                            alt="avatar"
+                          />
+                          <p>{user.pseudo}</p>
+                          <Tooltip id="tooltip-profil" effect="solid"></Tooltip>
+                        </div>
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="font-bold authButton"
+                    >
+                      Déconnexion
                     </button>
-                  </Link>
-                  <Link to="/register">
-                    <button className="font-bold authButton">S'inscrire</button>
-                  </Link>
-                </div>
-              )}
-            </div>
+                  </div>
+                ) : (
+                  <div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-2">
+                    <Link to="/login">
+                      <button className="font-bold authButton">
+                        Se connecter
+                      </button>
+                    </Link>
+                    <Link to="/register">
+                      <button className="font-bold authButton">
+                        S'inscrire
+                      </button>
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

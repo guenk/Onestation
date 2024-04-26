@@ -116,7 +116,7 @@ function App() {
               </>
             }
           />
-          <Route path="/profile" element={<Profil />} />
+          <Route path="/profile/:id" element={<Profil />} />
         </Routes>
       </PersistGate>
     </Provider>
