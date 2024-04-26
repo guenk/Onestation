@@ -7,8 +7,8 @@ import Chat from "./components/chat/Chat.jsx";
 import { Routes, Route } from 'react-router-dom';
 import { Provider} from 'react-redux';
 import { store, persistor } from './redux/store';
-import Login from '../pages/login/login';
-import Register from '../pages/register/register';
+import Login from './pages/login/login.jsx';
+import Register from './pages/register/register.jsx';
 import { PersistGate } from 'redux-persist/integration/react';
 
 

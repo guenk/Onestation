@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loginpicone from '../../src/assets/mainlogo.webp';
-import mainpic from '../../src/assets/mainpic.png';
+import loginpicone from '../../assets/mainlogo.webp';
+import mainpic from '../../assets/mainpic.png';
 import "./style.scss";
 
 export default function Register() {

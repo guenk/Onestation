@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginSuccess } from '../../src/redux/authActions';// Assurez-vous que le chemin est correct
-import loginpicone from '../../src/assets/mainlogo.webp'; // Assurez-vous que le chemin est correct
+import { loginSuccess } from '../../redux/authActions';// Assurez-vous que le chemin est correct
+import loginpicone from '../../assets/mainlogo.webp'; // Assurez-vous que le chemin est correct
 import "./style.scss";
 
 export default function Login() {
