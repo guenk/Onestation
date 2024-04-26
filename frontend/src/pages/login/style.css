@@ -4,8 +4,8 @@
   align-items: center;
   margin-top: 0;
   margin-bottom: 0;
-  background-image: url("../../src/assets/maintwo.webp");
-  background-size: 100% 120%;
+  background-image: url("../../src/assets/testwall.jpg");
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
