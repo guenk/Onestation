@@ -1,4 +1,16 @@
 const GamerModel = require("../models/GamerModel");
+const Joi = require("joi");
+const { passwordRegex } = require("./AuthController");
+
+const validateInput = (data) => {
+  const schema = Joi.object({
+    pseudo: Joi.string().trim(),
+    email: Joi.string().email().trim(),
+    password: Joi.string().regex(new RegExp(passwordRegex)).trim(),
+  });
+
+  return schema.validate(data);
+};
 
 const findById = async (req, res) => {
   const { id } = req.params;
@@ -17,6 +29,16 @@ const findById = async (req, res) => {
 
 const editGamer = async (req, res) => {
   const { id } = req.params;
+
+  const { error } = validateInput(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      errorCode: "invalidInput",
+      errorMessage: "invalid input",
+    });
+  }
+
   const { pseudo, email, password, avatar } = req.body;
 
   try {
@@ -31,7 +53,7 @@ const removeGamer = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await GamerModel.deleteGamer(id);
+    await GamerModel.deleteGamer(id);
     res.status(200).json({ success: true, message: "Joueur supprimé!" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

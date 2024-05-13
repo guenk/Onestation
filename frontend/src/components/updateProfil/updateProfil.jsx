@@ -43,7 +43,30 @@ const UpdateProfil = () => {
           </h2>
           <h2 className="text-[#FE2C65] my-16">Modifier son compte</h2>
         </div>
-        {/* /TODO */}
+        <div className="mt-6 mx-auto max-w-xl bg-[#F7F6F6] rounded-3xl p-5 flex justify-between">
+          <div className="flex items-center">
+            <div className="w-40 h-40 overflow-hidden rounded-full">
+              <img
+                src={user?.avatar}
+                alt="avatar"
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+            <div className="text-lg ml-6">
+              <p className="pb-2">
+                Pseudo: <span className="text-gray-500">{user?.pseudo}</span>{" "}
+              </p>
+              <p className="pb-2">
+                Email: <span className="text-gray-500">{user?.email}</span>
+              </p>
+              <p>
+                Mot de passe:{" "}
+                <span className="text-gray-500">************</span>{" "}
+              </p>
+            </div>
+          </div>
+          <div className="self-top text-2xl"></div>
+        </div>
       </div>
     </div>
   );
