@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./style.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import "./style.scss";
 import Header from "../../components/header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -11,10 +10,8 @@ import { updateUser } from "../../redux/authActions";
 const UpdateProfil = () => {
   const { user, token } = useSelector((state) => state.auth);
 
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   // update management
   const handleUpdate = async (e) => {
@@ -46,7 +43,7 @@ const UpdateProfil = () => {
           </h2>
           <h2 className="text-[#FE2C65] my-16">Modifier son compte</h2>
         </div>
-  {/* /TODO */}
+        {/* /TODO */}
       </div>
     </div>
   );

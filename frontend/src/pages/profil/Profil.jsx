@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import Header from "../../components/header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -74,12 +74,14 @@ const Profil = () => {
             </div>
           </div>
           <div className="self-top text-2xl">
-            <button>
-              <FontAwesomeIcon icon={faPen} className="text-[#0B8DFD] me-5" />
-            </button>
-            <button onClick={handleShow}>
-              <FontAwesomeIcon icon={faTrash} className="text-[#FE2C65]" />
-            </button>
+            <Link to={`/profil/modification/${user?.id_gamer}`}>
+              <button>
+                <FontAwesomeIcon icon={faPen} className="text-[#0B8DFD] me-5" />
+              </button>
+              <button onClick={handleShow}>
+                <FontAwesomeIcon icon={faTrash} className="text-[#FE2C65]" />
+              </button>
+            </Link>
             {showModal && (
               <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white p-8 rounded-lg text-sm">

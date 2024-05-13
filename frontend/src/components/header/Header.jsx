@@ -67,7 +67,7 @@ export default function Header() {
                 {isAuthenticated ? (
                   <div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
                     {user && (
-                      <Link to={`/profile/${user?.id_gamer}`}>
+                      <Link to={`/profil/${user?.id_gamer}`}>
                         <div
                           className="flex items-center gap-2"
                           data-tip

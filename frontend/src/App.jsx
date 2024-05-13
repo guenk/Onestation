@@ -12,6 +12,7 @@ import Login from './pages/login/login.jsx';
 import Register from './pages/register/register.jsx';
 import Header from "./components/header/Header";
 import Profil from "./pages/profil/Profil";
+import UpdateProfil from "./components/updateProfil/updateProfil";
 import Rules from './pages/rules/rules.jsx';
 
 
@@ -121,6 +122,7 @@ function App() {
             }
           />
           <Route path="/profil/:id" element={<Profil />} />
+          <Route path="/profil/modification/:id" element={<UpdateProfil />} />
         </Routes>
       </PersistGate>
     </Provider>
