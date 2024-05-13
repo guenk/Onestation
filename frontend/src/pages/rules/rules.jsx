@@ -1,10 +1,14 @@
 import React from 'react';
+import Header from "../../components/header/Header";
 import './style.scss'; 
 
 
 const Rules = () => {
   return (
-    <div className="rules-container"> {/* Ajoute cette classe pour englober et centrer le contenu */}
+    <div>
+       <Header/>
+    <div className="rules-container">
+      
       <div className="rules">
         <h1>Règles du Jeu</h1>
         <p>Bienvenue sur la page des règles. Voici comment jouer :</p>
@@ -24,6 +28,7 @@ const Rules = () => {
         </div>
 
       </div>
+    </div>
     </div>
   );
 }
