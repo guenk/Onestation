@@ -5,11 +5,14 @@ import CreateGame from "./components/creategame/CreateGame.jsx";
 import GameState from "./components/gamestate/GameState.jsx";
 import Chat from "./components/chat/Chat.jsx";
 import { Routes, Route } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
-import Login from "../pages/login/login";
-import Register from "../pages/register/register";
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider} from 'react-redux';
+import { store, persistor } from './redux/store';
+import Login from './pages/login/login.jsx';
+import Register from './pages/register/register.jsx';
+import Rules from './pages/rules/rules.jsx';
+
+
 
 const socket = io("http://localhost:3001");
 
@@ -73,6 +76,7 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/rules" element={<Rules />} />
           <Route
             path="/"
             element={
