@@ -7,38 +7,39 @@ import Header from "../../components/header/Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../../redux/authActions.js";
+import { Tooltip } from "react-tooltip";
 
 const Profil = () => {
-	const { user, token } = useSelector((state) => state.auth);
-	const [showModal, setShowModal] = useState(false);
+  const { user, token } = useSelector((state) => state.auth);
+  const [showModal, setShowModal] = useState(false);
 
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const avatarFileName = user.avatar.split("/").pop();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const avatarFileName = user?.avatar.split("/").pop();
 
-	//modal management
-	const handleShow = () => setShowModal(true);
+  //modal management
+  const handleShow = () => setShowModal(true);
 
-	const handleClose = () => {
-		setShowModal(false);
-	};
-	// delete management
-	const handleDelete = async (e) => {
-		e.preventDefault();
-		try {
-			await fetch(`http://localhost:3001/api/gamer/${user.id_gamer}`, {
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
-				},
-			});
-			dispatch(logout());
-			navigate("/");
-		} catch (err) {
-			console.error("Error deleting user:", err);
-		}
-	};
+  const handleClose = () => {
+    setShowModal(false);
+  };
+  // delete management
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch(`http://localhost:3001/api/gamer/${user.id_gamer}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(logout());
+      navigate("/");
+    } catch (err) {
+      console.error("Error deleting user:", err);
+    }
+  };
 
   return (
     <div>
@@ -54,9 +55,11 @@ const Profil = () => {
         </div>
         <div className="mt-6 mx-auto max-w-xl bg-[#F7F6F6] rounded-3xl p-5 flex justify-between">
           <div className="flex items-center">
-            <div className="w-40 h-40 overflow-hidden rounded-full">
+            <div className="w-40 h-40 overflow-hidden rounded-full avatar">
               <img
-                src={user?.avatar}
+                src={`${
+                  import.meta.env.VITE_BACKEND_URL
+                }/static/${avatarFileName}`}
                 alt="avatar"
                 className="h-full w-full object-cover object-center"
               />
@@ -76,13 +79,24 @@ const Profil = () => {
           </div>
           <div className="self-top text-2xl">
             <Link to={`/profil/modification/${user?.id_gamer}`}>
-              <button>
+              <button
+                data-tip
+                data-tooltip-id="tooltip-modification"
+                data-tooltip-content="Modifier mon profil"
+              >
                 <FontAwesomeIcon icon={faPen} className="text-[#0B8DFD] me-5" />
+                <Tooltip id="tooltip-modification" effect="solid"></Tooltip>
               </button>
             </Link>
-              <button onClick={handleShow}>
-                <FontAwesomeIcon icon={faTrash} className="text-[#FE2C65]" />
-              </button>
+            <button
+              onClick={handleShow}
+              data-tip
+              data-tooltip-id="tooltip-suppression"
+              data-tooltip-content="Supprimer mon profil"
+            >
+              <FontAwesomeIcon icon={faTrash} className="text-[#FE2C65]" />
+              <Tooltip id="tooltip-suppression" effect="solid"></Tooltip>
+            </button>
             {showModal && (
               <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white p-8 rounded-lg text-sm">

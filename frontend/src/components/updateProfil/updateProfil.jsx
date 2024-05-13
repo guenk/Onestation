@@ -3,19 +3,47 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./style.scss";
 import Header from "../../components/header/Header";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { updateUser } from "../../redux/authActions";
+import { validateInputs } from "../../utils/errorInputs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "react-tooltip";
 
 const UpdateProfil = () => {
   const { user, token } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const avatarFileName = user?.avatar.split("/").pop();
+
+  const [formData, setFormData] = useState({
+    pseudo: "",
+    email: "",
+    avatar: "",
+    password: "",
+  });
+  const [formError, setFormError] = useState("");
+  const [isModified, setIsModified] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    setIsModified(true);
+  };
 
   // update management
-  const handleUpdate = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const inputErrors = validateInputs({ pseudo, password });
+
+    if (Object.keys(inputErrors).length > 0) {
+      setFormError(inputErrors);
+    }
+
     try {
       await fetch(`http://localhost:3001/api/gamer/${user.id_gamer}`, {
         method: "UPDATE",
@@ -24,48 +52,114 @@ const UpdateProfil = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+      setIsModified(false);
       dispatch(updateUser());
-      navigate("/");
+      navigate(`/profil/${user.id_gamer}`);
     } catch (err) {
       console.error("Error deleting user:", err);
     }
   };
 
   return (
-    <div>
+    <div className="">
       <Header />
-      <div className="bg-profil">
+      <div className="updateProfil">
         <div className="font-bold text-center text-2xl mt-20 ">
           <h2>
             <span className="text-[#FE2C65]">Bienvenue </span>
             <span className="text-[#FFB401]">sur Guess </span>
             <span className="text-[#0B8DFD]">My Draw !</span>
           </h2>
-          <h2 className="text-[#FE2C65] my-16">Modifier son compte</h2>
+          <h2 className="my-16">
+            <span className="text-[#FFB401]">Modifier </span>
+            <span className="text-[#0B8DFD]">mon </span>
+            <span className="text-[#FE2C65]">profil </span>
+          </h2>
         </div>
         <div className="mt-6 mx-auto max-w-xl bg-[#F7F6F6] rounded-3xl p-5 flex justify-between">
-          <div className="flex items-center">
-            <div className="w-40 h-40 overflow-hidden rounded-full">
-              <img
-                src={user?.avatar}
-                alt="avatar"
-                className="h-full w-full object-cover object-center"
+          <form
+            onSubmit={handleSubmit}
+            method="POST"
+            action="/upload"
+            encType="multipart/form-data"
+          >
+            <div className="flex items-center gap-5">
+              <label className="w-40 h-40 overflow-hidden rounded-full border avatar">
+                <img
+                  src={`${
+                    import.meta.env.VITE_BACKEND_URL
+                  }/static/${avatarFileName}`}
+                  alt="avatar"
+                  className="h-full w-full object-cover object-center"
+                />
+              </label>
+              {/* TODO: wip */}
+              {/* <input
+                id="avatarInput"
+                type="file"
+                hidden
+                name="avatar"
+                className="mx-4 my-2 border border-0"
+                // onChange={}
               />
+              <label
+                htmlFor="avatarInput"
+                className="avatarTooltip px-2 position-absolute bottom-0 start-100 translate-middle-x"
+              >
+                <div
+                  className="flex items-center gap-2"
+                  data-tip
+                  data-tooltip-id="tooltip-profil"
+                  data-tooltip-content="Changer mon avatar"
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                  <Tooltip id="tooltip-profil" effect="solid"></Tooltip>
+                </div>
+              </label> */}
+              <div className="grid grid-cols-1 gap-y-3">
+                <div className="flex items-center">
+                  <label className="pb-2 w-32"> Pseudo: </label>
+                  <input
+                    type="text"
+                    name="pseudo"
+                    value={formData.pseudo}
+                    placeholder={user.pseudo}
+                    onChange={handleChange}
+                    className="border rounded px-3 py-1"
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <label className="pb-2 w-32">Email:</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    placeholder={user.email}
+                    onChange={handleChange}
+                    className="border rounded px-3 py-1"
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <label className="pb-2 w-32">Mot de passe:</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    placeholder="*********"
+                    onChange={handleChange}
+                    className="border rounded px-3 py-1"
+                  />
+                </div>
+              </div>
             </div>
-            <div className="text-lg ml-6">
-              <p className="pb-2">
-                Pseudo: <span className="text-gray-500">{user?.pseudo}</span>{" "}
-              </p>
-              <p className="pb-2">
-                Email: <span className="text-gray-500">{user?.email}</span>
-              </p>
-              <p>
-                Mot de passe:{" "}
-                <span className="text-gray-500">************</span>{" "}
-              </p>
+            <div className="flex justify-center">
+              <button type="submit" className="mt-5" disabled={!isModified}>
+                Modifier
+              </button>
             </div>
-          </div>
-          <div className="self-top text-2xl"></div>
+          </form>
         </div>
       </div>
     </div>
