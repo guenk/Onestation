@@ -3,7 +3,9 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f4f4f8; // Couleur de fond légère pour le contraste
+    background-image: url('../../src/assets/grib.png'); /* Ajoutez votre URL de l'image ici */
+    background-size: contain; /* Couvre la hauteur et la largeur complètes du conteneur */
+    background-position: center; // Couleur de fond légère pour le contraste
     padding: 20px;
   }
   

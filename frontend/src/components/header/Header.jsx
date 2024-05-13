@@ -11,6 +11,7 @@ import "./style.scss";
 const navigation = [
 	{ name: "Rejoindre une partie", href: "#", current: false },
 	{ name: "Créer une partie", href: "#", current: false },
+	{ name: "Règles du jeu", href: "/rules", current: false },
 ];
 
 function classNames(...classes) {
