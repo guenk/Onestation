@@ -17,6 +17,8 @@ const io = new Server(server, {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/api/", routes);
+app.use('/static', express.static('src/assets'));
+
 
 // Démarrer le serveur
 const port = process.env.PORT || 8080;
