@@ -9,35 +9,36 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../../redux/authActions.js";
 
 const Profil = () => {
-  const { user, token } = useSelector((state) => state.auth);
-  const [showModal, setShowModal] = useState(false);
+	const { user, token } = useSelector((state) => state.auth);
+	const [showModal, setShowModal] = useState(false);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const avatarFileName = user.avatar.split("/").pop();
 
-  //modal management
-  const handleShow = () => setShowModal(true);
+	//modal management
+	const handleShow = () => setShowModal(true);
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
-  // delete management
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    try {
-      await fetch(`http://localhost:3001/api/gamer/${user.id_gamer}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch(logout());
-      navigate("/");
-    } catch (err) {
-      console.error("Error deleting user:", err);
-    }
-  };
+	const handleClose = () => {
+		setShowModal(false);
+	};
+	// delete management
+	const handleDelete = async (e) => {
+		e.preventDefault();
+		try {
+			await fetch(`http://localhost:3001/api/gamer/${user.id_gamer}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			dispatch(logout());
+			navigate("/");
+		} catch (err) {
+			console.error("Error deleting user:", err);
+		}
+	};
 
   return (
     <div>
@@ -78,10 +79,10 @@ const Profil = () => {
               <button>
                 <FontAwesomeIcon icon={faPen} className="text-[#0B8DFD] me-5" />
               </button>
+            </Link>
               <button onClick={handleShow}>
                 <FontAwesomeIcon icon={faTrash} className="text-[#FE2C65]" />
               </button>
-            </Link>
             {showModal && (
               <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white p-8 rounded-lg text-sm">
