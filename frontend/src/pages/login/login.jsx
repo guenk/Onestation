@@ -31,8 +31,9 @@ export default function Login() {
       }
 
       const data = await response.json();
+      const { token, user } = data;
       console.log('Connexion réussie:', data);
-      dispatch(loginSuccess(data.token));  // Dispatch de l'action loginSuccess avec le token
+      dispatch(loginSuccess(token, user));  
       toast.success("Connexion réussie !");
       navigate('/');  // Redirection vers la page d'accueil
     } catch (error) {
