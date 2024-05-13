@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../../redux/authActions.js";
 
-const Profile = () => {
+const Profil = () => {
   const { user, token } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
 
@@ -42,7 +42,7 @@ const Profile = () => {
   return (
     <div>
       <Header />
-      <div className="bg-profile">
+      <div className="bg-profil">
         <div className="font-bold text-center text-2xl mt-20 ">
           <h2>
             <span className="text-[#FE2C65]">Bienvenue </span>
@@ -108,4 +108,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Profil;
