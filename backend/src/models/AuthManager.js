@@ -24,7 +24,7 @@ class AuthManager extends AbstractManager {
     const existingUsers = await this.findByEmail(email);
 
     if (existingUsers.length > 0) {
-      throw new Error("Un utilisateur avec cet email existe déjà.");
+        throw new Error("Un utilisateur avec cet email existe déjà.");
     }
 
     // Hachage du mot de passe
@@ -33,16 +33,33 @@ class AuthManager extends AbstractManager {
     // Ajout du rôle "Joueur" par défaut
     const defaultRole = await RoleModel.getIdByLabel("Gamer");
 
+    // Sélection aléatoire d'un avatar du dossier assets
+    const avatars = [
+        "backend/src/assets/av1.png",
+        "backend/src/assets/av2.png",
+        "backend/src/assets/av3.png",
+        "backend/src/assets/av4.png",
+        "backend/src/assets/av5.png",
+        "backend/src/assets/av6.png",
+        "backend/src/assets/av7.png",
+        "backend/src/assets/av8.png",
+        "backend/src/assets/av9.png",
+        "backend/src/assets/av10.png",
+        "backend/src/assets/av11.png"
+        // Ajouter d'autres chemins selon les avatars disponibles
+    ];
+    const avatar = avatars[Math.floor(Math.random() * avatars.length)];
+
     // Préparation et exécution de la requête d'insertion
     try {
         const result = await new Promise((resolve, reject) => {
-            const query = `INSERT INTO Gamer (pseudo, email, password, id_role) VALUES (?, ?, ?, ?)`;
-            db.run(query, [pseudo, email, hashedPassword, defaultRole.id_role], function(err) {
+            const query = `INSERT INTO Gamer (pseudo, email, password, id_role, avatar) VALUES (?, ?, ?, ?, ?)`;
+            db.run(query, [pseudo, email, hashedPassword, defaultRole.id_role, avatar], function(err) {
                 if (err) {
                     reject(err);
                 } else {
                     console.log("Utilisateur inséré avec succès. ID:", this.lastID);
-                    resolve({ IdUtilisateur: this.lastID, email }); // Renvoyer les informations utilisateur
+                    resolve({ IdUtilisateur: this.lastID, email, avatar }); // Renvoyer les informations utilisateur
                 }
             });
         });
