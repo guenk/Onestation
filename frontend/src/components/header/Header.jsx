@@ -29,7 +29,7 @@ export default function Header() {
 			console.error("Error during logout:", error);
 		}
 	};
-	const avatarFileName = user.avatar.split("/").pop();
+	const avatarFileName = user?.avatar.split("/").pop();
 
 	return (
 		<Disclosure as="nav">
