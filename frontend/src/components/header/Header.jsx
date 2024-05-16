@@ -9,9 +9,9 @@ import { Tooltip } from "react-tooltip";
 import "./style.scss";
 
 const navigation = [
-	{ name: "Rejoindre une partie", href: "#", current: false },
-	{ name: "Créer une partie", href: "#", current: false },
-	{ name: "Règles du jeu", href: "/rules", current: false },
+	{ name: "Rejoindre une partie", to: "/" },
+	{ name: "Créer une partie", to: "/" },
+	{ name: "Règles du jeu", to: "/rules" },
 ];
 
 function classNames(...classes) {
@@ -29,7 +29,8 @@ export default function Header() {
 			console.error("Error during logout:", error);
 		}
 	};
-	const avatarFileName = user.avatar.split("/").pop();
+
+	const avatarFileName = user?.avatar?.split("/").pop();
 
 	return (
 		<Disclosure as="nav">
@@ -38,7 +39,7 @@ export default function Header() {
 					<div className="mx-auto max-w-7xl py-5 sm:px-6 lg:px-8 NavBar">
 						<div className="relative flex items-center">
 							<div className="absolute inset-y-0 left-0 flex items-center sm:hidden pl-5">
-								{/* Mobile menu button*/}
+								{/* Mobile menu button */}
 								<Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-black-400 pl-5">
 									<span className="absolute -inset-0.5" />
 									{open ? (
@@ -59,13 +60,13 @@ export default function Header() {
 								<div className="hidden sm:ml-6 sm:block flex flex-col">
 									<div className="flex space-x-4">
 										{navigation.map((item) => (
-											<a
+											<Link
 												key={item.name}
-												href={item.href}
+												to={item.to}
 												className="hover:underline hover:text-[#0B8DFD] hover:font-bold"
 											>
 												{item.name}
-											</a>
+											</Link>
 										))}
 									</div>
 								</div>
@@ -73,7 +74,7 @@ export default function Header() {
 								{isAuthenticated ? (
 									<div className="absolute inset-y-0 right-0 flex flex-col md:flex-row items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 gap-3">
 										{user && (
-											<Link to={`/profil/${user?.id_gamer}`}>
+											<Link to={`/profil/${user.id_gamer}`}>
 												<div
 													className="flex items-center gap-2"
 													data-tip
@@ -124,8 +125,8 @@ export default function Header() {
 							{navigation.map((item) => (
 								<Disclosure.Button
 									key={item.name}
-									as="a"
-									href={item.href}
+									as={Link} // Use Link for mobile menu items as well
+									to={item.to}
 									className={classNames(
 										item.current ? "bg-black-900 text-white" : "text-black-300",
 										"block rounded-md px-3 py-2 text-base font-medium"
