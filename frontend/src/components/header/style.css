@@ -1,0 +1,30 @@
+.app {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Variables pour les couleurs
+*/
+.NavBar .authButton {
+  background-color: #FFB401;
+  padding: 5px 20px;
+  border-radius: 30px;
+  width: 138px;
+  font-family: "Permanent Marker", cursive;
+}
+.NavBar .authButton:hover {
+  background-color: #0B8DFD;
+  color: black;
+}
+
+.NavBar a {
+  font-family: "Permanent Marker", cursive;
+}
+
+/*# sourceMappingURL=style.css.map */
