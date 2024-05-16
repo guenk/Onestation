@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { loginSuccess } from "../../redux/authActions";
-import loginpicone from "../../assets/mainlogo.webp";
+import loginpicone from "../../assets/navbarpic2.png";
 import { validateInputs } from "../../utils/errorInputs";
 import "./style.scss";
 
@@ -53,7 +53,9 @@ export default function Login() {
           toast.error("Merci de respecter le format requis");
           break;
         case "invalidCombinaison":
-          toast.error("Identifiants (pseudo / email) et/ou mot de passe incorrect.");
+          toast.error(
+            "Identifiants (pseudo / email) et/ou mot de passe incorrect."
+          );
           break;
         default:
           toast.error(error.message || "Erreur lors de la connexion.");
@@ -107,6 +109,14 @@ export default function Login() {
             )}
           </div>
           <button type="submit">Se connecter</button>
+          <div className="text-center mt-4">
+            <Link to={"/register"}>
+              Vous n'avez pas encore de compte?
+              <button type="button" className="mt-3">
+                S'inscrire
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </>
