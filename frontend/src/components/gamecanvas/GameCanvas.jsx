@@ -1,14 +1,16 @@
+import { useEffect } from "react";
 import Canva from "../../components/canva/Canva";
 
 const GameCanvas = ({
-	socket,
-	room,
-	etape,
-	changerEtape,
-	words,
-	setWords,
-	setChatMessageAuto,
-	player,
+  socket,
+  room,
+  etape,
+  round,
+  changerEtape,
+  words,
+  setWords,
+  setChatMessageAuto,
+  drawer,
 }) => {
 	function handleCustomWordsChange(value) {
 		setWords(value.split(","));
@@ -18,13 +20,13 @@ const GameCanvas = ({
 		if (words.length < 10) {
 			setChatMessageAuto("Ajoutez un minimum de 10 mots");
 		} else {
-			changerEtape(1);
+			changerEtape(1, 1);
 		}
 	}
 
-	function handleWordChosen(e) {
-		changerEtape(2, e.target.textContent);
-	}
+  function handleWordChosen(e) {
+    changerEtape(2, round, e.target.textContent);
+  }
 
 	switch (etape) {
 		case 0:
@@ -60,39 +62,45 @@ const GameCanvas = ({
 				</div>
 			);
 
-		case 1:
-			return (
-				<div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl">
-					{player.id === socket.id ? (
-						<>
-							<p className="text-center">Choisissez un mot</p>
-							<div className="flex gap-2">
-								{words.map((e, index) => {
-									return (
-										<button
-											onClick={handleWordChosen}
-											className="bg-blue-300 rounded-xl py-2 px-4 font-bold text-white hover:bg-blue-400 active:bg-blue-500"
-											key={index}
-										>
-											{e}
-										</button>
-									);
-								})}
-							</div>
-						</>
-					) : (
-						player.profil.username + " est en train de choisir un mot..."
-					)}
-				</div>
-			);
+    case 1:
+      return (
+        <div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl">
+          {drawer.id === socket.id ? (
+            <>
+              <p className="text-center">Choisissez un mot</p>
+              <div className="flex gap-2">
+                {
+                  words.map((e, index) => {
+                  return (
+                    <button
+                      onClick={handleWordChosen}
+                      className="bg-blue-300 rounded-xl py-2 px-4 font-bold text-white hover:bg-blue-400 active:bg-blue-500"
+                      key={index}
+                    >
+                      {e}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            drawer.profil.username + " est en train de choisir un mot..."
+          )}
+        </div>
+      );
 
-		case 2:
-			return (
-				<div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl">
-					<Canva />
-				</div>
-			);
-	}
+    case 2:
+      return (
+        <Canva />
+      );
+
+    case 3:
+      return (
+        <div className="flex p-4 flex-col justify-center gap-5 bg-slate-100 border rounded-xl">
+          {drawer.profil.username} a gagné !
+        </div>
+      );
+  }
 };
 
 export default GameCanvas;

@@ -1,0 +1,27 @@
+.app {
+  margin: 0;
+  padding: 0;
+}
+
+.body {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Variables pour les couleurs
+*/
+.bg-profil {
+  background-image: url("../../assets/maintwo.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
+}
+.bg-profil .avatar {
+  border: 5px solid #FE2C65;
+}
+.bg-profil .icon {
+  font-size: 1.6rem;
+}
+
+/*# sourceMappingURL=style.css.map */

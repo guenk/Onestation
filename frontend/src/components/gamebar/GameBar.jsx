@@ -1,6 +1,6 @@
-const GameBar = ({ round, label, etape, words, socket, player }) => {
+const GameBar = ({ round, label, etape, words, socket, drawer }) => {
   if (etape === 2) {
-    if (socket.id === player.id) {
+    if (socket.id === drawer.id) {
       return (
         <div id="game-bar" className="flex justify-center gap-10">
           <p>Round {round} sur 3</p>
