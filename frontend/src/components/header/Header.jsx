@@ -51,11 +51,13 @@ export default function Header() {
 							</div>
 							<div className="flex flex-1 items-center justify-center sm:justify-evenly">
 								<div className="flex flex-shrink-0 items-center">
+								<Link to={"/"}>
 									<img
 										className="h-24 w-auto"
 										src={logo}
 										alt="guess my draw logo"
 									/>
+								</Link>
 								</div>
 								<div className="hidden sm:ml-6 sm:block flex flex-col">
 									<div className="flex space-x-4">

@@ -1,11 +1,12 @@
 export const validateInputs = ({ pseudo, password }) => {
   let errors = {};
-  console.log(pseudo);
-  if (pseudo.length < 5) {
-    errors.login = "Le pseudo doit contenir au moins 5 caractères.";
+  
+  if (pseudo && pseudo.length < 5) {
+    errors.pseudo = "Le pseudo doit contenir au moins 5 caractères.";
   }
 
   if (
+    password &&
     !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%&*()_+]{10,32}$/.test(
       password
     )
