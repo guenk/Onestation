@@ -1,15 +1,36 @@
-const GamePlayers = ({}) => {
-    return (
-        <div id="game-players" className="flex gap-5 h-20">
-            <img className="w-20 aspect-square rounded-xl"
-                 src="https://images.unsplash.com/photo-1481349518771-20055b2a7b24?q=80&w=939&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                 alt=""/>
-            <div className="flex flex-col justify-center">
-                <p>Jean</p>
-                300 points
-            </div>
-        </div>
-    );
-};
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export default GamePlayers;
+export default function GamePlayers({ players }) {
+	const user = useSelector((state) => state.auth.user);
+	const [initializedPlayers, setInitializedPlayers] = useState([]);
+
+	useEffect(() => {
+		// Initialize player points at the beginning of the game
+		if (players.length > 0) {
+			const updatedPlayers = players.map((player) => ({
+				...player,
+				points: player.points || 0,
+			}));
+			setInitializedPlayers(updatedPlayers);
+		}
+	}, [players]);
+
+	return (
+		<div id="game-players" className="flex gap-5 h-20">
+			{initializedPlayers.map((player, index) => (
+				<div key={index} className="player flex items-center gap-5">
+					<img
+						className="w-20 aspect-square rounded-xl"
+						src={player.avatarUrl}
+						alt={player.name}
+					/>
+					<div className="flex flex-col justify-center">
+						<p>{player.name}</p>
+						<p>{player.points} points</p>
+					</div>
+				</div>
+			))}
+		</div>
+	);
+}
