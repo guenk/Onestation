@@ -102,11 +102,10 @@ const UpdateProfil = () => {
 						<div className="flex items-center gap-5">
 							<label className="w-40 h-40 overflow-hidden rounded-full border avatar">
 								<img
-									src={`${
-										import.meta.env.VITE_BACKEND_URL
-									}/static/${avatarFileName}`}
+									className="h-full w-full object-cover object-center hover:opacity-75 cursor-pointer"
+									src={getImageUrl(currentIndex)}
 									alt="avatar"
-									className="h-full w-full object-cover object-center"
+									onClick={handleClick}
 								/>
 							</label>
 							{/* TODO: wip */}
