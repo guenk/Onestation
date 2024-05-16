@@ -1,63 +1,63 @@
 .mainlogin {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0;
-  margin-bottom: 0;
-  background-image: url("../../src/assets/testwall.jpg");
-  background-size: 120% 115%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: whitesmoke; // Conserve l'arrière-plan clair pour une cohérence visuelle
-  margin-top: 2vh;
-  margin-bottom: 2vh;
-  padding: 2em;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 350px;
-
-  label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 0.5em;
-    color: #333; // Maintient une couleur neutre pour les textes
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-image: url('../../src/assets/testwall.jpg');
+    background-size: cover;
+    background-position: left;
+    background-repeat: no-repeat;
+    
   }
-
-  input {
-    border: 2px solid #ccc; // Conserve la même bordure neutre
-    border-radius: 4px;
-    padding: 0.5em;
-    display: block;
-    width: 100%;
-    margin-bottom: 1.5em;
-
-    &:focus {
-      border-color: blue; // Conserve la même mise en valeur lors de la sélection
-      outline: none;
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: whitesmoke; // Conserve l'arrière-plan clair pour une cohérence visuelle
+   margin-top:2vh;
+   margin-bottom: 2vh;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+    
+    
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5em;
+      color: #333; // Maintient une couleur neutre pour les textes
+    }
+  
+    input {
+      border: 2px solid #ccc; // Conserve la même bordure neutre
+      border-radius: 4px;
+      padding: 0.5em;
+      display: block;
+      width: 100%;
+      margin-bottom: 1.5em;
+  
+      &:focus {
+        border-color: blue; // Conserve la même mise en valeur lors de la sélection
+        outline: none;
+      }
+    }
+  
+    button {
+      background-color: blue; // Utilise la même couleur principale pour les boutons
+      color: white;
+      padding: 0.75em 1.5em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+  
+      &:hover {
+        background-color: darken(blue, 10%); // Conserve l'effet d'assombrissement au survol
+      }
     }
   }
 
-  button {
-    background-color: blue; // Utilise la même couleur principale pour les boutons
-    color: white;
-    padding: 0.75em 1.5em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-
-    &:hover {
-      background-color: darken(
-        blue,
-        10%
-      ); // Conserve l'effet d'assombrissement au survol
-    }
-  }
-}

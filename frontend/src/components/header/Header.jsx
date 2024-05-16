@@ -30,6 +30,7 @@ export default function Header() {
 		}
 	};
 	const avatarFileName = user.avatar.split("/").pop();
+
 	return (
 		<Disclosure as="nav">
 			{({ open }) => (

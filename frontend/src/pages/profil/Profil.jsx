@@ -12,16 +12,16 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Profil = () => {
-  const { user, token } = useSelector((state) => state.auth);
-  const [showModal, setShowModal] = useState(false);
+	const { user, token } = useSelector((state) => state.auth);
+	const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const avatarFileName = user?.avatar.split("/").pop();
 
-  //modal management
-  const handleShow = () => setShowModal(true);
+	//modal management
+	const handleShow = () => setShowModal(true);
 
   const handleClose = () => {
     setShowModal(false);
