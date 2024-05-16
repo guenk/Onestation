@@ -6,7 +6,7 @@ const Chat = ({
   profil,
   chatMessageAuto,
   setChatMessageAuto,
-  player,
+  drawer,
   etape,
 }) => {
   const [messages, setMessages] = useState([]);
@@ -19,7 +19,7 @@ const Chat = ({
 
   function sendGuess() {
     setMessages((messages) => [...messages, { message, sender: profil }]);
-    socket.emit("guess", { message, roomID, profil });
+    socket.emit("guess", { message, roomID, guesser: { id: socket.id, profil }});
   }
 
   useEffect(() => {
@@ -29,7 +29,15 @@ const Chat = ({
         { message: receivedMessage, sender },
       ]);
     });
-  }, [socket]);
+
+    socket.on("close_to_guess", ({ guesser }) => {
+      if (guesser.id === socket.id) {
+        setChatMessageAuto("Vous êtes proche !");
+      } else {
+        setChatMessageAuto(guesser.profil.username + " est proche !");
+      }
+    });
+  }, [setChatMessageAuto, socket]);
 
   useEffect(() => {
     if (chatMessageAuto !== undefined && chatMessageAuto !== "")
@@ -41,7 +49,7 @@ const Chat = ({
 
   function handleSubmit(e) {
     if (e.key === "Enter" || e.keyCode === 13) {
-      if (etape === 2 && socket.id !== player.id) {
+      if (etape === 2 && socket.id !== drawer.id) {
         sendGuess(message, roomID);
         setMessage("");
       } else {

@@ -25,9 +25,9 @@ const GameState = ({
   const [label, setLabel] = useState("En attente");
   const [chatMessageAuto, setChatMessageAuto] = useState();
   const [words, setWords] = useState("");
-  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [currentDrawer, setCurrentDrawer] = useState(null);
 
-  function changerEtape(etapeEnCours, mot = null) {
+  function changerEtape(etapeEnCours, round, mot = null) {
     switch (etapeEnCours) {
       case 1:
         setLabel("En attente");
@@ -35,15 +35,21 @@ const GameState = ({
           roomID,
           customWords: words,
           etapeEnCours: 1,
+          round: round,
         });
         break;
 
       case 2:
-        socket.emit("new_step", {
-          roomID,
-          customWords: mot,
-          etapeEnCours: 2,
-        });
+        try {
+          socket.emit("new_step", {
+            roomID,
+            customWords: mot,
+            etapeEnCours: 2,
+            round: round,
+          });
+        } catch (e) {
+          console.log(e);
+        }
     }
   }
 
@@ -54,10 +60,10 @@ const GameState = ({
   useEffect(() => {
     socket.on(
       "game_started",
-      ({ etapeEnCours, currentPlayer, chosenWords }) => {
-        setEtape(etapeEnCours);
-        setCurrentPlayer(currentPlayer);
+      ({ etapeEnCours, currentDrawer, chosenWords }) => {
+        setCurrentDrawer(currentDrawer);
         setWords(chosenWords);
+        setEtape(etapeEnCours);
       },
     );
 
@@ -65,7 +71,20 @@ const GameState = ({
       setEtape(etapeEnCours);
       setWords(word);
     });
-  });
+
+    socket.on("victory", ({ winner, nextDrawer }) => {
+      setEtape(3);
+      setCurrentDrawer(winner); // On se sert du même state pour éviter de créer un state inutile
+
+      setTimeout(() => {
+        setRound(round + 1);
+
+        if (nextDrawer.id === socket.id) {
+          changerEtape(1, round + 1);
+        }
+      }, 5000);
+    });
+  }, []);
 
   return (
     <div id="game-board" className="m-4">
@@ -75,7 +94,7 @@ const GameState = ({
         etape={etape}
         words={words}
         socket={socket}
-        player={currentPlayer}
+        drawer={currentDrawer}
       ></GameBar>
 
       <GamePlayers />
@@ -84,11 +103,12 @@ const GameState = ({
         socket={socket}
         room={room}
         etape={etape}
+        round={round}
         changerEtape={changerEtape}
         words={words}
         setWords={setWords}
         setChatMessageAuto={setChatMessageAuto}
-        player={currentPlayer}
+        drawer={currentDrawer}
       ></GameCanvas>
 
       <Chat
@@ -97,7 +117,7 @@ const GameState = ({
         profil={profil}
         chatMessageAuto={chatMessageAuto}
         setChatMessageAuto={setChatMessageAuto}
-        player={currentPlayer}
+        drawer={currentDrawer}
         etape={etape}
       ></Chat>
 

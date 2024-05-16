@@ -9,7 +9,7 @@ class GamerModel {
   static getById(idGamer) {
     return new Promise((resolve, reject) => {
       const query = `
-      SELECT id_gamer, pseudo, email, avatar, Role.label
+      SELECT *
       FROM Gamer 
       INNER JOIN Role ON Gamer.id_role = Role.id_role 
       WHERE id_gamer = ?
@@ -18,7 +18,7 @@ class GamerModel {
         if (err) {
           reject(err);
         } else {
-          resolve(row);
+          resolve(row ? row : {});
         }
       });
     });

@@ -1,0 +1,19 @@
+@import "../../App";
+
+.NavBar {
+  .authButton {
+    background-color: $yellow-color;
+    padding: 5px 20px;
+    border-radius: 30px;
+    width: 138px;
+    font-family: 'Permanent Marker', cursive;
+
+    &:hover {
+      background-color: $blue-color; 
+      color: black;
+    }
+  }
+}
+.NavBar a {
+  font-family: 'Permanent Marker', cursive;
+}
