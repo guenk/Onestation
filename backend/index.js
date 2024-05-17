@@ -26,8 +26,6 @@ app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);
 });
 
-// Connexion du joueur à l'app
-
 const gameRooms = new Map([
   [
     0,
@@ -65,10 +63,15 @@ io.on("connection", (socket) => {
     } while (gameRooms.has(roomID));
 
     gameRooms.set(roomID, {
-      users: [{ id: socket.id, profil: profil }],
-      privateOrNot: privateOrNot,
-      maxUsers: 10,
-      creator: socket.id,
+      users: [{ id: socket.id, profil: profil }], // Liste d'utilisateurs de la salle de jeux
+      customWords: [], // Mots personnalisés
+      currentWord: null, // Mots choisis par le joueur
+      currentDrawer: null, // Joueur actuel
+      nextDrawer: null, // Prochain joueur
+      privateOrNot: privateOrNot, // Salle de jeux privée
+      maxUsers: 10, // Nombre d'utilisateurs autorisés
+      creator: socket.id, // ID de la socket ayant créé la salle de jeux
+      etape: 0, // Étape actuelle de la partie
     });
 
     socket.join(roomID);
@@ -110,51 +113,72 @@ io.on("connection", (socket) => {
       .emit("receiveMessage", { receivedMessage: message, sender: profil });
   });
 
-  // Début d'une partie
-  socket.on("new_step", ({ roomID, customWords, etapeEnCours }) => {
+  // Nouvelle étape d'une partie
+  socket.on("new_step", ({ roomID, customWords, etapeEnCours, round }) => {
     let room = gameRooms.get(roomID);
 
-    room.customWords = customWords;
     room.etape = etapeEnCours;
 
+    if (round === 1 && etapeEnCours === 1) {
+      room.customWords = customWords.map(word => normalizeString(word));
+    }
+
     switch (etapeEnCours) {
-      case 1: // L'utilisateur choisi de façon aléatoire, choisi parmi trois mots aléatoire
-        let currentPlayer =
-          room.users[Math.floor(Math.random() * room.users.length)];
+      case 1:
         let chosenWords = [];
         let customWordsCopy = room.customWords;
 
+        // Choix du premier dessinateur
+        if (round === 1) {
+          room.currentDrawer = room.users[Math.floor(Math.random() * room.users.length)];
+        }
+
+        // Choix de trois mots aléatoires
         for (let i = 0; i < 3; i++) {
           let random = Math.floor(Math.random() * customWordsCopy.length);
           chosenWords.push(customWordsCopy[random]);
           customWordsCopy.splice(random, 1);
         }
 
+        // Envoi des informations aux sockets
         io.to(roomID).emit("game_started", {
           etapeEnCours: room.etape,
-          currentPlayer,
+          currentDrawer: room.currentDrawer,
           chosenWords,
         });
         break;
 
-      case 2: // Le mot choisi est envoyés à tout les sockets
+      case 2:
+        room.currentWord = customWords;
+
         io.to(roomID).emit("word_chosen", {
           etapeEnCours: room.etape,
           word: customWords,
         });
-        room.word = customWords;
+
         break;
     }
   });
 
-  // Envoi du message au reste des personnes dans la partie
-  socket.on("guess", ({ message, roomID, socketID, profil }) => {
+  // Un joueur tente de deviner le mot
+  socket.on("guess", ({ message, roomID, guesser }) => {
     let room = gameRooms.get(roomID);
 
-    if (message === room.word) {
-      io.to(roomID).emit("victory", { sender: profil });
-    } else if (getErrorMargin(message, room.word)) {
-      io.to(roomID).emit("close_to_guess", { socketID, sender: profil });
+    // Le mot est correct
+    if (message === room.currentWord) {
+
+      // Nouveau dessinateur
+      do {
+        room.nextDrawer =
+          room.users[Math.floor(Math.random() * room.users.length)];
+      } while (room.nextDrawer.id === room.currentDrawer.id);
+
+      io.to(roomID).emit("victory", { winner: guesser, nextDrawer: room.nextDrawer });
+    }
+
+    // Le mot est proche
+    else if (getErrorMargin(message, room.currentWord)) {
+      io.to(roomID).emit("close_to_guess", { guesser });
     }
   });
 });
@@ -164,7 +188,11 @@ server.listen(3001, () => {
 });
 
 function normalizeString(str) {
-  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (str === undefined) {
+    return '';
+  }
+
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace('\n', '').toLowerCase();
 }
 
 function getErrorMargin(str1, str2) {

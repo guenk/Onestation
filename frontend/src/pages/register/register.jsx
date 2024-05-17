@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Ajout pour la redirection
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import loginpicone from "../../assets/mainlogo.webp";
+import loginpicone from "../../assets/navbarpic2.png";
 import { Link } from "react-router-dom";
 import { validateInputs } from "../../utils/errorInputs";
 
@@ -75,9 +75,9 @@ export default function Register() {
               onChange={(e) => setPseudo(e.target.value)}
               required
             />
-            {formError.login && (
+            {formError.pseudo && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-3 rounded relative">
-                {formError.login}
+                {formError.pseudo}
               </div>
             )}
           </div>
@@ -105,6 +105,15 @@ export default function Register() {
             )}
           </div>
           <button type="submit">S'inscrire</button>
+          <div className="text-center mt-4">
+            <Link to={"/login"}>
+              Vous avez déjà un compte?
+              <button type="button" className="mt-3">
+                {" "}
+                Se connecter
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </>

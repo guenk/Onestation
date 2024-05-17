@@ -6,7 +6,7 @@
   margin-bottom: 0;
   background-image: url("../../src/assets/testwall.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: left;
   background-repeat: no-repeat;
 }
 
@@ -15,12 +15,12 @@
   flex-direction: column;
   justify-content: center;
   background: whitesmoke;
-  margin-top: 9vh;
-  margin-bottom: 9vh;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
   padding: 2em;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 325px;
+  max-width: 350px;
 }
 .login-form label {
   font-weight: bold;

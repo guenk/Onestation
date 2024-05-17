@@ -18,7 +18,7 @@ class GamerModel {
         if (err) {
           reject(err);
         } else {
-          resolve(row ? [row] : []);
+          resolve(row ? row : {});
         }
       });
     });

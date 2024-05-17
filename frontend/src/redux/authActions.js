@@ -11,7 +11,7 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-export const updateUser = (user) => ({
+export const updateUser = (pseudo, email, avatar) => ({
   type: UPDATE_USER,
-  payload: { user },
+  payload: { pseudo, email, avatar },
 });
