@@ -7,126 +7,126 @@ import GameToolbar from "../gametoolbar/GameToolbar.jsx";
 import "./GameState.scss";
 
 const GameState = ({
-  socket,
-  roomID,
-  room,
-  profil,
-  messageAuto,
-  setMessageAuto,
+	socket,
+	roomID,
+	room,
+	profil,
+	messageAuto,
+	setMessageAuto,
 }) => {
-  const labels = {
-    1: "En attente",
-    2: "Devinez le mot",
-    3: "Dessinez le mot",
-  };
+	const labels = {
+		1: "En attente",
+		2: "Devinez le mot",
+		3: "Dessinez le mot",
+	};
 
-  const [etape, setEtape] = useState(0);
-  const [round, setRound] = useState(1);
-  const [label, setLabel] = useState("En attente");
-  const [chatMessageAuto, setChatMessageAuto] = useState();
-  const [words, setWords] = useState("");
-  const [currentDrawer, setCurrentDrawer] = useState(null);
+	const [etape, setEtape] = useState(0);
+	const [round, setRound] = useState(1);
+	const [label, setLabel] = useState("En attente");
+	const [chatMessageAuto, setChatMessageAuto] = useState();
+	const [words, setWords] = useState("");
+	const [currentDrawer, setCurrentDrawer] = useState(null);
 
-  function changerEtape(etapeEnCours, round, mot = null) {
-    switch (etapeEnCours) {
-      case 1:
-        setLabel("En attente");
-        socket.emit("new_step", {
-          roomID,
-          customWords: words,
-          etapeEnCours: 1,
-          round: round,
-        });
-        break;
+	function changerEtape(etapeEnCours, round, mot = null) {
+		switch (etapeEnCours) {
+			case 1:
+				setLabel("En attente");
+				socket.emit("new_step", {
+					roomID,
+					customWords: words,
+					etapeEnCours: 1,
+					round: round,
+				});
+				break;
 
-      case 2:
-        try {
-          socket.emit("new_step", {
-            roomID,
-            customWords: mot,
-            etapeEnCours: 2,
-            round: round,
-          });
-        } catch (e) {
-          console.log(e);
-        }
-    }
-  }
+			case 2:
+				try {
+					socket.emit("new_step", {
+						roomID,
+						customWords: mot,
+						etapeEnCours: 2,
+						round: round,
+					});
+				} catch (e) {
+					console.log(e);
+				}
+		}
+	}
 
-  useEffect(() => {
-    setChatMessageAuto(messageAuto);
-  }, [messageAuto, setMessageAuto]);
+	useEffect(() => {
+		setChatMessageAuto(messageAuto);
+	}, [messageAuto, setMessageAuto]);
 
-  useEffect(() => {
-    socket.on(
-      "game_started",
-      ({ etapeEnCours, currentDrawer, chosenWords }) => {
-        setCurrentDrawer(currentDrawer);
-        setWords(chosenWords);
-        setEtape(etapeEnCours);
-      },
-    );
+	useEffect(() => {
+		socket.on(
+			"game_started",
+			({ etapeEnCours, currentDrawer, chosenWords }) => {
+				setCurrentDrawer(currentDrawer);
+				setWords(chosenWords);
+				setEtape(etapeEnCours);
+			}
+		);
 
-    socket.on("word_chosen", ({ etapeEnCours, word }) => {
-      setEtape(etapeEnCours);
-      setWords(word);
-    });
+		socket.on("word_chosen", ({ etapeEnCours, word }) => {
+			setEtape(etapeEnCours);
+			setWords(word);
+		});
 
-    socket.on("victory", ({ winner, nextDrawer }) => {
-      setEtape(3);
-      setCurrentDrawer(winner); // On se sert du même state pour éviter de créer un state inutile
+		socket.on("victory", ({ winner, nextDrawer }) => {
+			setEtape(3);
+			setCurrentDrawer(winner); // On se sert du même state pour éviter de créer un state inutile
 
-      setTimeout(() => {
-        setRound(round + 1);
+			setTimeout(() => {
+				setRound(round + 1);
 
-        if (nextDrawer.id === socket.id) {
-          changerEtape(1, round + 1);
-        }
-      }, 5000);
-    });
-  }, []);
+				if (nextDrawer.id === socket.id) {
+					changerEtape(1, round + 1);
+				}
+			}, 5000);
+		});
+	}, []);
 
-  return (
-    <div id="game-board" className="m-4">
-      <GameBar
-        round={round}
-        label={label}
-        etape={etape}
-        words={words}
-        socket={socket}
-        drawer={currentDrawer}
-      ></GameBar>
+	return (
+		<div id="game-board" className="m-4">
+			<GameBar
+				round={round}
+				label={label}
+				etape={etape}
+				words={words}
+				socket={socket}
+				drawer={currentDrawer}
+			></GameBar>
 
-      <GamePlayers />
+			<GamePlayers />
 
-      <GameCanvas
-        socket={socket}
-        room={room}
-        etape={etape}
-        round={round}
-        changerEtape={changerEtape}
-        words={words}
-        setWords={setWords}
-        setChatMessageAuto={setChatMessageAuto}
-        drawer={currentDrawer}
-      ></GameCanvas>
+			<GameCanvas
+				socket={socket}
+				room={room}
+				etape={etape}
+				round={round}
+				changerEtape={changerEtape}
+				words={words}
+				setWords={setWords}
+				setChatMessageAuto={setChatMessageAuto}
+				drawer={currentDrawer}
+			></GameCanvas>
 
-      <Chat
-        socket={socket}
-        roomID={roomID}
-        profil={profil}
-        chatMessageAuto={chatMessageAuto}
-        setChatMessageAuto={setChatMessageAuto}
-        drawer={currentDrawer}
-        etape={etape}
-      ></Chat>
+			<Chat
+				socket={socket}
+				roomID={roomID}
+				profil={profil}
+				chatMessageAuto={chatMessageAuto}
+				setChatMessageAuto={setChatMessageAuto}
+				drawer={currentDrawer}
+				etape={etape}
+			></Chat>
 
-      <GameToolbar
-        roomID={roomID}
-        setChatMessageAuto={setChatMessageAuto}
-      ></GameToolbar>
-    </div>
-  );
+			<GameToolbar
+				roomID={roomID}
+				setChatMessageAuto={setChatMessageAuto}
+			></GameToolbar>
+		</div>
+	);
 };
 
 export default GameState;
