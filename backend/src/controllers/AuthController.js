@@ -2,6 +2,7 @@ const models = require("../models/AuthManager");
 const { generateToken } = require("../middlewares/Auth");
 const Joi = require("joi");
 const AuthManager = require("../models/AuthManager");
+const RoleModel = require("../models/RoleModel");
 
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%&*()_+]{10,32}$/;
@@ -121,6 +122,9 @@ const login = async (req, res) => {
       email,
     }); // Ajout du log
 
+    // get role label
+    const role = await RoleModel.getById(id_role);
+
     if (!id_gamer) {
       console.log("Aucun utilisateur trouvé avec ces informations.");
       res.status(401).json({
@@ -137,7 +141,7 @@ const login = async (req, res) => {
         success: true,
         message: "Connexion réussie.",
         token,
-        user: { id_gamer, email, pseudo, avatar, id_role },
+        user: { id_gamer, email, pseudo, avatar, role },
       });
     }
   } catch (err) {
