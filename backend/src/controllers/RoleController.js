@@ -15,6 +15,16 @@ const findById = async (req, res) => {
   }
 };
 
+const findRoles = async (req, res) => {
+  try {
+    const roles = await RoleModel.getRoles();
+    res.status(200).json(roles);
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   findById,
+  findRoles,
 };

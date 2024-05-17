@@ -22,7 +22,6 @@ const authReducer = (
         ...state,
         user: {
           ...state.user,
-          ...state.user,
           pseudo:
             action.payload.pseudo !== undefined
               ? action.payload.pseudo
@@ -35,6 +34,16 @@ const authReducer = (
             action.payload.avatar !== undefined
               ? action.payload.avatar
               : state.user.avatar,
+          role: {
+            id_role:
+              action.payload.id_role !== undefined
+                ? action.payload.id_role
+                : state.user.role.id_role,
+            label:
+              action.payload.label !== undefined
+                ? action.payload.label
+                : state.user.role.label,
+          },
         },
       };
     default:
