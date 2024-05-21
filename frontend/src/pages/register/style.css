@@ -4,9 +4,9 @@
   margin-top: 0;
   margin-bottom: 0;
   background-image: url("../../src/assets/maintwo.webp");
-  background-size: 100% 120%;
+  background-size: 55%;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 .register-form {
@@ -33,7 +33,7 @@
   padding: 0.5em;
   display: block;
   width: 100%;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
 }
 .register-form input:focus {
   border-color: blue;
@@ -52,3 +52,5 @@
 .register-form button:hover {
   background-color: #0000cc;
 }
+
+/*# sourceMappingURL=style.css.map */

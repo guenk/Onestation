@@ -1,53 +1,31 @@
 /* src/components/style.scss */
-.canva-container {
+.canva {
+    height: calc(100% - 60px);
+    width: 100%;
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.colors {
     display: flex;
-    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-  
-    canvas {
-      border: 1px solid #ccc;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-  }
-  
-  .controls {
-    margin-top: 10px;
-  
-    button {
-      margin: 0 5px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border: none;
-      background-color: #007bff;
-      color: white;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color: #0056b3;
-      }
-    }
-  
-    .color-picker {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-  
-      label {
-        margin-right: 10px;
-        font-size: 16px;
-      }
-  
-      input[type="color"] {
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-        border: none;
-        padding: 0;
-      }
-    }
-  }
-  
+    padding: 20px 0;
+}
+
+.color {
+    display: flex;
+    height: 48px;
+    width: 48px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.color.black { background-color: black; }
+.color.red { background-color: red; }
+.color.green { background-color: green; }
+.color.blue { background-color: blue; }
+.color.yellow { background-color: yellow; }

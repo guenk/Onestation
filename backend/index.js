@@ -160,6 +160,26 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on('drawing', ({ roomID, socketID, data }) => {
+    socket.broadcast.to(roomID).emit("drew", { socketID, data });
+  });
+
+  socket.on('clearCanvas', ({ roomID }) => {
+    socket.broadcast.to(roomID).emit('clearCanvas');
+  });
+
+  socket.on('undoLastStroke', ({ roomID }) => {
+    socket.broadcast.to(roomID).emit('undoLastStroke');
+  });
+
+  socket.on('saveDrawing', ({ roomID, data }) => {
+    socket.broadcast.to(roomID).emit('saveDrawing', { data });
+  });
+
+  socket.on('handleColorChange', ({ roomID, color }) => {
+    socket.broadcast.to(roomID).emit('handleColorChange', { color });
+  });
+
   // Un joueur tente de deviner le mot
   socket.on("guess", ({ message, roomID, guesser }) => {
     let room = gameRooms.get(roomID);

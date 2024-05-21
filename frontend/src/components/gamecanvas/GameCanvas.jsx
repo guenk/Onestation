@@ -3,6 +3,7 @@ import Canva from "../../components/canva/Canva";
 
 const GameCanvas = ({
   socket,
+  roomID,
   room,
   etape,
   round,
@@ -91,7 +92,7 @@ const GameCanvas = ({
 
     case 2:
       return (
-        <Canva />
+        <Canva socket={socket} roomID={roomID} />
       );
 
     case 3:
