@@ -1,11 +1,11 @@
 .mainregister {
+  height: 100vh;
   display: flex;
   justify-content: center;
   margin-top: 0;
   margin-bottom: 0;
   background-image: url("../../src/assets/maintwo.webp");
-  background-size: 55%;
-  background-position: center;
+  background-size: cover;
   background-repeat: repeat;
 }
 

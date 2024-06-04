@@ -22,13 +22,18 @@ function App() {
 	const [room, setRoom] = useState({ roomID: null, room: null });
 	const [messageAuto, setMessageAuto] = useState("");
 	const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-	const token = useSelector((state) => state.auth.token);
+	const user = useSelector((state) => state.auth.user);
 
 	// Normally stored in DB
 	const profil = {
-		username: "Jean Patrick",
+		username: user?.pseudo,
 		color: "#FF6F61",
+		avatar: user?.avatar,
 	};
+
+	function pageAccueil() {
+		setRoom({ roomID: 0, room: null });
+	}
 
 	function joinRoom(roomID) {
 		const queryParameters = new URLSearchParams(window.location.search);
@@ -83,15 +88,15 @@ function App() {
 						path="/"
 						element={
 							<>
-								<Header />
+								<Header pageAccueil={pageAccueil}/>
 								{/* <div className="authentication-status">
                   {isAuthenticated
                     ? `Logged in with token: ${token}`
                     : "Not logged in"}
                 </div> */}
-								{room.roomID === null || room.roomID === 0 ? (
-									<div className="flex h-screen justify-evenly">
-										<div className="flex flex-col items-center justify-center flex-1 gap-5">
+								{room.roomID == undefined || room.roomID == 0 ? (
+									<div className="flex h-[calc(100%-140px)] justify-evenly">
+										<div className="flex flex-col items-center justify-center flex-auto gap-5">
 											<h1 className="mb-8 text-4xl font-bold">Guess My Draw</h1>
 											<CreateGame
 												joinRoom={joinRoom}
@@ -99,7 +104,7 @@ function App() {
 												profil={profil}
 											/>
 										</div>
-										<div className="h-full p-5">
+										<div className="h-full flex-auto p-5">
 											<Chat
 												socket={socket}
 												roomID={room.roomID}
@@ -108,6 +113,7 @@ function App() {
 										</div>
 									</div>
 								) : (
+									// <h1>{room}</h1>
 									<GameState
 										socket={socket}
 										roomID={room.roomID}

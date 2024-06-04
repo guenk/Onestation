@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: calc(100vh - 140px);
     background-image: url('../../src/assets/grib.png'); /* Ajoutez votre URL de l'image ici */
     background-size: contain; /* Couvre la hauteur et la largeur complètes du conteneur */
     background-position: center; // Couleur de fond légère pour le contraste
@@ -64,4 +64,3 @@
       }
     }
   }
-  

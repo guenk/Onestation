@@ -9,8 +9,6 @@ import { Tooltip } from "react-tooltip";
 import "./style.scss";
 
 const navigation = [
-	{ name: "Rejoindre une partie", to: "/" },
-	{ name: "Créer une partie", to: "/" },
 	{ name: "Règles du jeu", to: "/rules" },
 ];
 
@@ -18,7 +16,7 @@ function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
 
-export default function Header() {
+export default function Header({pageAccueil}) {
 	const { isAuthenticated, user } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
@@ -51,13 +49,12 @@ export default function Header() {
 							</div>
 							<div className="flex flex-1 items-center justify-center sm:justify-evenly">
 								<div className="flex flex-shrink-0 items-center">
-								<Link to={"/"}>
-									<img
-										className="h-24 w-auto"
-										src={logo}
-										alt="guess my draw logo"
-									/>
-								</Link>
+								<img
+									onClick={() => { pageAccueil()}}
+									className="h-24 w-auto"
+									src={logo}
+									alt="guess my draw logo"
+								/>
 								</div>
 								<div className="hidden sm:ml-6 sm:block flex flex-col">
 									<div className="flex space-x-4">

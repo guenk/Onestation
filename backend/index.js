@@ -102,7 +102,9 @@ io.on("connection", (socket) => {
     if (room.users.length + 1 <= room.maxUsers) {
       socket.join(roomID);
       room.users.push({ id: socket.id, profil: profil });
-      socket.emit("room_joined", { roomID, roomJoined: room });
+
+      socket.emit("room_joined", { roomID, roomJoined: room }); // Pour le layout joueur
+      io.to(roomID).emit("player_joined", { players: room.users }); // Pour le reste des joueurs
     }
   });
 

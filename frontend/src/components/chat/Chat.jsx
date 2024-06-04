@@ -86,6 +86,7 @@ const Chat = ({
         }}
         onKeyUp={handleSubmit}
         value={message}
+        style={ profil.username ? { display: "block" } : { display: "none"} }
       />
     </div>
   );
