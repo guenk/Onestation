@@ -31,10 +31,6 @@ function App() {
 		avatar: user?.avatar,
 	};
 
-	function pageAccueil() {
-		setRoom({ roomID: 0, room: null });
-	}
-
 	function joinRoom(roomID) {
 		const queryParameters = new URLSearchParams(window.location.search);
 		roomID = Number(queryParameters.toString().split("=")[0].trim());
@@ -88,7 +84,7 @@ function App() {
 						path="/"
 						element={
 							<>
-								<Header pageAccueil={pageAccueil}/>
+								<Header roomID={room.roomID} setRoom={setRoom}/>
 								{/* <div className="authentication-status">
                   {isAuthenticated
                     ? `Logged in with token: ${token}`

@@ -16,9 +16,18 @@ function classNames(...classes) {
 	return classes.filter(Boolean).join(" ");
 }
 
-export default function Header({pageAccueil}) {
+export default function Header({ roomID, setRoom }) {
 	const { isAuthenticated, user } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
+
+	function pageAccueil() {
+		if (roomID !== 0 && roomID !== undefined) {
+			console.log(roomID);
+			setRoom({ roomID: 0, room: null });
+		}
+
+		location.href = "/";
+	}
 
 	const handleLogout = async () => {
 		try {
@@ -50,7 +59,7 @@ export default function Header({pageAccueil}) {
 							<div className="flex flex-1 items-center justify-center sm:justify-evenly">
 								<div className="flex flex-shrink-0 items-center">
 								<img
-									onClick={() => { pageAccueil()}}
+									onClick={() => { pageAccueil(); }}
 									className="h-24 w-auto"
 									src={logo}
 									alt="guess my draw logo"
