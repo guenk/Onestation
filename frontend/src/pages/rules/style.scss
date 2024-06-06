@@ -1,0 +1,66 @@
+.rules-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 140px);
+    background-image: url('../../src/assets/grib.png'); /* Ajoutez votre URL de l'image ici */
+    background-size: contain; /* Couvre la hauteur et la largeur complètes du conteneur */
+    background-position: center; // Couleur de fond légère pour le contraste
+    padding: 20px;
+  }
+  
+  .rules {
+    width: 80%;
+    max-width: 800px; // Limite la largeur maximale pour les grands écrans
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  
+    h1 {
+      font-size: 2.5rem;
+      color: #e63946; // Couleur rouge pour les titres principaux
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  
+    p {
+      font-size: 1rem;
+      color: #333;
+      line-height: 1.6;
+    }
+  
+    .rule-section {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f8f9fa; // Fond légèrement différent pour chaque section
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  
+      h2 {
+        font-size: 1.75rem;
+        color: #1d3557; // Bleu foncé pour les sous-titres
+        margin-bottom: 10px;
+      }
+  
+      h3 {
+        font-size: 1.25rem;
+        color: #1a1c1c; // Bleu intermédiaire pour les informations supplémentaires
+        margin-bottom: 10px;
+        
+        border-bottom: 1px solid #000; // Utilise la couleur de ton choix ici
+        padding-bottom: 2px; // Ajuste cet espace pour augmenter la distance entre le texte et la ligne
+        line-height: 1.5;// Souligne les informations supplémentaires
+      }
+  
+      p {
+        font-size: 1rem;
+        color: #333;
+      }
+  
+      &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); // Effet de survol pour ajouter de l'interactivité
+      }
+    }
+  }

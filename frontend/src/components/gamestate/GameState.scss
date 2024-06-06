@@ -1,0 +1,32 @@
+#game-board {
+  display: grid;
+  grid-template-areas: "bar bar bar" "players canvas chat" "toolbar toolbar toolbar";
+  grid-auto-columns: 200px 1fr 500px;
+  gap: 15px;
+}
+
+#game-bar {
+  grid-area: bar;
+}
+
+#game-players {
+  grid-area: players;
+}
+
+#game-canvas {
+  grid-area: canvas;
+}
+
+#game-chat {
+  grid-area: chat;
+}
+
+#game-toolbar {
+  grid-area: toolbar;
+}
+
+@media (orientation: portrait) {
+  #game-board {
+    grid-template-areas: "bar bar" "canvas canvas" "toolbar toolbar" "players chat";
+  }
+}

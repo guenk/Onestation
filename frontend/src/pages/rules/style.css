@@ -1,0 +1,61 @@
+@charset "UTF-8";
+.rules-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 140px);
+  background-image: url("../../src/assets/grib.png"); /* Ajoutez votre URL de l'image ici */
+  background-size: contain; /* Couvre la hauteur et la largeur complètes du conteneur */
+  background-position: center;
+  padding: 20px;
+}
+
+.rules {
+  width: 80%;
+  max-width: 800px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+.rules h1 {
+  font-size: 2.5rem;
+  color: #e63946;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.rules p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+}
+.rules .rule-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.rules .rule-section h2 {
+  font-size: 1.75rem;
+  color: #1d3557;
+  margin-bottom: 10px;
+}
+.rules .rule-section h3 {
+  font-size: 1.25rem;
+  color: #1a1c1c;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #000;
+  padding-bottom: 2px;
+  line-height: 1.5;
+}
+.rules .rule-section p {
+  font-size: 1rem;
+  color: #333;
+}
+.rules .rule-section:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/*# sourceMappingURL=style.css.map */
