@@ -1,6 +1,7 @@
 #game-board {
   display: grid;
   grid-template-areas: "bar bar bar" "players canvas chat" "toolbar toolbar toolbar";
+  grid-auto-columns: 200px 1fr 500px;
   gap: 15px;
 }
 

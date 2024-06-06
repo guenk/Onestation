@@ -97,7 +97,7 @@ const GameState = ({
         drawer={currentDrawer}
       ></GameBar>
 
-      <GamePlayers />
+      <GamePlayers socket={socket} roomID={roomID} />
 
       <GameCanvas
         socket={socket}

@@ -17,9 +17,10 @@ Variables pour les couleurs
   border-radius: 30px;
   width: 138px;
   font-family: "Permanent Marker", cursive;
+  white-space: nowrap;
 }
 .NavBar .authButton:hover {
-  background-color: #0B8DFD;
+  background-color: #da9a03;
   color: black;
 }
 

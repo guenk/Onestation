@@ -9,10 +9,6 @@ const Canva = ({socket, roomID}) => {
   const linesRef = useRef(lines);
 
   useEffect(() => {
-    console.log(color);
-  }, [color])
-
-  useEffect(() => {
     linesRef.current = lines; // Add this line
   }, [lines]);
 

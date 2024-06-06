@@ -1,8 +1,21 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../../redux/authActions";
 
-const GamePlayers = () => {
+const GamePlayers = ({ socket, roomID }) => {
+
+	const [players, setPlayers] = useState([]);
+
+	useEffect(() => {
+				socket.on("player_joined", ({ players }) => {
+					setPlayers(players);
+				});
+
+				socket.on("player_left", ({ players }) => {
+					setPlayers(players);
+				})
+	});
+
 	const dispatch = useDispatch();
 
 	// Sélectionner les informations du joueur depuis le store Redux
@@ -16,23 +29,26 @@ const GamePlayers = () => {
 		}
 	}, [dispatch, user?.id_role, user?.pseudo, user?.email, user?.avatar]);
 
-	// Récupérer le nom du fichier avatar
-	const avatarFileName = user?.avatar?.split("/").pop();
-
 	if (!user) {
 		return <div>Loading...</div>;
 	}
 
 	return (
-		<div id="game-players" className="flex gap-5 h-20">
-			<img
-				className="h-8 w-8 rounded-full"
-				src={`${import.meta.env.VITE_BACKEND_URL}/static/${avatarFileName}`}
-				alt="Description de l'image"
-			/>
-			<div className="flex flex-col justify-center">
-				<p>{user.pseudo}</p>0 points
-			</div>
+		<div id="game-players" className="flex flex-col gap-5 p-5 bg-slate-100 border rounded-xl">
+			{
+				players.map((player) => {
+					return (
+						<div key={player.id} className="flex gap-5 items-center justify-center">
+							<img
+								className="h-8 w-8 rounded-full"
+								src={`${import.meta.env.VITE_BACKEND_URL}/static/${player?.profil.avatar?.split("/").pop()}`}
+								alt="Description de l'image"
+							/>
+							<p>{player.profil.username}</p>
+						</div>
+					);
+				})
+			}
 		</div>
 	);
 };

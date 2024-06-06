@@ -7,9 +7,10 @@
     border-radius: 30px;
     width: 138px;
     font-family: 'Permanent Marker', cursive;
+    white-space: nowrap;
 
     &:hover {
-      background-color: $blue-color; 
+      background-color: #da9a03;
       color: black;
     }
   }
