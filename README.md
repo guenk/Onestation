@@ -1,91 +1,97 @@
-OneStation est une application de Pictionary en ligne construite avec React pour le frontend et Node.js avec Express pour le backend.
-L'application permet aux utilisateurs de jouer au Pictionary en temps réel avec d'autres joueurs.
 
-Fonctionnalités :
+# OneStation
 
-Jeu de Pictionary en temps réel
-Interface utilisateur moderne et réactive
-Authentification des utilisateurs
-Stockage des données de jeu dans une base de données SQLite
-Notifications en temps réel via Socket.io
+OneStation est une application de Pictionary en ligne construite avec React pour le frontend et Node.js avec Express pour le backend. L'application permet aux utilisateurs de jouer au Pictionary en temps réel avec d'autres joueurs.
 
-Technologies utilisées :
+## Fonctionnalités
 
-Frontend
+- 🎨 Jeu de Pictionary en temps réel
+- 🖥️ Interface utilisateur moderne et réactive
+- 🔒 Authentification des utilisateurs
+- 🗄️ Stockage des données de jeu dans une base de données SQLite
+- 📡 Notifications en temps réel via Socket.io
 
-React,
-Redux,
-React Router,
-Tailwind CSS,
-Socket.io-client,
-Vite,
-Backend,
-Node.js,
-Express,
-Socket.io,
-SQLite,
-bcrypt pour le hachage des mots de passe,
-jsonwebtoken pour l'authentification
+## Technologies utilisées
 
-Installation :
+### Frontend
 
-Prérequis
-Node.js
-npm
+- React
+- Redux
+- React Router
+- Tailwind CSS
+- Socket.io-client
+- Vite
 
+### Backend
 
-Frontend
+- Node.js
+- Express
+- Socket.io
+- SQLite
+- bcrypt pour le hachage des mots de passe
+- jsonwebtoken pour l'authentification
 
-Clonez le dépôt :
+## Installation
 
-Copier le code suivant : 
+### Prérequis
 
-git clone https://github.com/votre-utilisateur/onestation.git
-cd onestation/frontend
+- Node.js
+- npm
 
-Installez les dépendances :
+### Frontend
 
-Copier le code suivant :
-npm install
+1. **Clonez le dépôt :**
 
-Démarrez l'application en mode développement :
+   \`\`\`bash
+   git clone https://github.com/votre-utilisateur/onestation.git
+   cd onestation/frontend
+   \`\`\`
 
-Copier le code suivant :
-npm run dev
+2. **Installez les dépendances :**
 
+   \`\`\`bash
+   npm install
+   \`\`\`
 
+3. **Démarrez l'application en mode développement :**
 
-Backend
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
-Accédez au répertoire backend :
+### Backend
 
-Copier le code suivant :
-cd ../backend
+1. **Accédez au répertoire backend :**
 
-Installez les dépendances
+   \`\`\`bash
+   cd ../backend
+   \`\`\`
 
-Copier le code suivant :
+2. **Installez les dépendances :**
 
-npm install
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-Démarrez le serveur en mode développement :
+3. **Démarrez le serveur en mode développement :**
 
-Copier le code suivant :
-npm run dev
+   \`\`\`bash
+   npm run dev
+   \`\`\`
 
+### Variables d'environnement
 
-Variables d'environnement
+Créez un fichier \`.env\` dans le répertoire \`backend\` et ajoutez les variables suivantes :
 
-Créez un fichier .env dans le répertoire backend et ajoutez les variables suivantes :
-
+\`\`\`plaintext
 PORT=5000
 JWT_SECRET=your_jwt_secret
 DATABASE_URL=sqlite:./database.sqlite
+\`\`\`
 
+## Structure du projet
 
-
-Structure du projet
-
+\`\`\`plaintext
 frontend/
 ├── public/
 ├── src/
@@ -107,15 +113,18 @@ backend/
 ├── .env
 ├── package.json
 └── database.sqlite
+\`\`\`
 
+## Contributions
 
-Contributions
 Les contributions sont les bienvenues. Pour contribuer :
 
-Forkez le projet
-Créez votre branche de fonctionnalité (git checkout -b feature/ma-nouvelle-fonctionnalité)
-Commitez vos changements (git commit -am 'Ajout d'une nouvelle fonctionnalité')
-Pushez votre branche (git push origin feature/ma-nouvelle-fonctionnalité)
-Ouvrez une Pull Request
-Licence
-Ce projet est sous licence JOJO. Voir le fichier LICENSE pour plus de détails.
+1. **Forkez le projet**
+2. **Créez votre branche de fonctionnalité** (\`git checkout -b feature/ma-nouvelle-fonctionnalité\`)
+3. **Commitez vos changements** (\`git commit -am 'Ajout d'une nouvelle fonctionnalité'\`)
+4. **Pushez votre branche** (\`git push origin feature/ma-nouvelle-fonctionnalité\`)
+5. **Ouvrez une Pull Request**
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier \`LICENSE\` pour plus de détails.
