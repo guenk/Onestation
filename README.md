@@ -91,7 +91,7 @@ DATABASE_URL=sqlite:./database.sqlite
 
 ## Structure du projet
 
-\`\`\`plaintext
+
 frontend/
 ├── public/
 ├── src/
