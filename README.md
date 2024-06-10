@@ -43,7 +43,7 @@ OneStation est une application de Pictionary en ligne construite avec React pour
 1. **Clonez le dépôt :**
 
    \`\`\`bash
-   git clone https://github.com/votre-utilisateur/onestation.git
+   git clone https://github.com/guenk/onestation.git
    cd onestation/frontend
    \`\`\`
 
